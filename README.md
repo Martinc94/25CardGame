@@ -5,7 +5,33 @@
 25 Card Game using Typescript, Node, and Phaser.
 
 ## How To Run 
-...
+### Install Dependencies
+From the main directory run
+```
+npm install
+```
+
+### Server
+To run server
+```
+node server.js
+```
+
+### For Development Work
+Install dependencies
+```
+npm install -g nodemon
+```
+
+Run server for development
+```
+nodemon server.js
+```
+
+To compile Typescript run the following 
+```
+tsc
+```
 
 ## Server
 ...
