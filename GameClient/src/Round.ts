@@ -6,9 +6,11 @@ class Round {
     private players = new Array<Player>();
     private trump : Card;
     private playerCount : number;
+    private realCount: number;
 
-    constructor(playerCount:number) {
+    constructor(playerCount:number,realCount:number) {
         this.playerCount=playerCount;
+        this.realCount=realCount;
         this.init();
     }
 
@@ -21,18 +23,24 @@ class Round {
 
         this.deck.assignTrump(this.trump.getSuit());
 
-        this.setupPlayers();
+        this.setupPlayers(this.realCount);
 
         this.testRound();
 
     }//init
 
     //setup players array
-    private setupPlayers(){
+    private setupPlayers(realCount){
         //generate hands for each player
         for(var i = 0; i < this.playerCount; i++){
             //new Hand for Player
             var newPlayer = new Player("Player "+(i+1),0);
+
+            //if not a player add player as a cpu
+            if(i>=realCount){
+                newPlayer.setAsCPU();
+            }
+
             var newHand = new Hand();
 
             //draw 5 card and add to hand
@@ -54,11 +62,11 @@ class Round {
         var winner=cardArray[0];
 
         //iterate over array of cards
-        for(var i = 1; i < cardArray.length; i++){
+        for(var i = 1; i < Object.keys(cardArray).length; i++){
             var tempCrd=cardArray[i];
 
-            //if temp card is a trump or same suit compare values
-            if(tempCrd.getIsTrump()||winner.getSuit()==tempCrd.getSuit()){
+            //if temp card is a trump, ace of hearts(34) or same suit compare values
+            if(tempCrd.getIsTrump()||winner.getSuit()==tempCrd.getSuit()||tempCrd.getValue()==34){
                 //compare values (higher value wins)
                 if(tempCrd.getValue() > winner.getValue()){
                     winner=tempCrd;
@@ -69,16 +77,9 @@ class Round {
     }//decideWinningCard
 
     public start(){
-        //console.log("start");
-
         for(var i = 1; i < this.players.length; i++){
-           // console.log(this.players[i].getHand().getCards().toString());
-
             var cards =this.players[i].getHand().getCards();
-
-            //console.log(cards[0].getImageName());
         }
-        
     }
 
     public getTrump(): Card {
