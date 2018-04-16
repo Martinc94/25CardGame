@@ -19,7 +19,7 @@ var Card = /** @class */ (function () {
     Card.prototype.getIsTrump = function () {
         return this.trump;
     };
-    Card.prototype.toString = function () {
+    Card.prototype.getFullName = function () {
         return this.name + " of " + this.suit;
     };
     Card.prototype.getImageName = function () {
@@ -93,7 +93,7 @@ var Deck = /** @class */ (function () {
             var tmpCrd = this.deck[i];
             switch (tmpCrd.getName()) {
                 case "ace": {
-                    if (tmpCrd.getSuit() == "Hearts") {
+                    if (tmpCrd.getSuit() == "hearts") {
                         tmpCrd.assignTrump();
                         tmpCrd.assignValue(34);
                     }
@@ -101,7 +101,7 @@ var Deck = /** @class */ (function () {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(33);
                         }
-                        else if (tmpCrd.getSuit() == "Diamonds") {
+                        else if (tmpCrd.getSuit() == "diamonds") {
                             tmpCrd.assignValue(1);
                         }
                         else {
@@ -111,7 +111,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "2": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(23);
                         }
@@ -129,7 +129,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "3": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(24);
                         }
@@ -146,7 +146,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "4": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(25);
                         }
@@ -163,7 +163,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "5": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(36);
                         }
@@ -180,7 +180,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "6": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(26);
                         }
@@ -197,7 +197,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "7": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(27);
                         }
@@ -214,7 +214,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "8": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(28);
                         }
@@ -231,7 +231,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "9": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(29);
                         }
@@ -248,7 +248,7 @@ var Deck = /** @class */ (function () {
                     break;
                 }
                 case "10": {
-                    if (tmpCrd.getSuit() == "Hearts" || tmpCrd.getSuit() == "Diamonds") {
+                    if (tmpCrd.getSuit() == "hearts" || tmpCrd.getSuit() == "diamonds") {
                         if (tmpCrd.getIsTrump()) {
                             tmpCrd.assignValue(30);
                         }
@@ -312,28 +312,75 @@ var Deck = /** @class */ (function () {
     return Deck;
 }()); //Deck
 var Game = /** @class */ (function () {
-    function Game(players) {
-        //TODO
-        //get cards from server
-        this.round = new Round(players);
+    function Game(gameSize, players) {
+        //TODO - get cards from server
+        this.round = new Round(gameSize, players);
         this.round.start();
+        //init variables
+        this.players = this.round.getPlayers();
         //get whose move it is from server
         this.move = 0;
     }
     Game.prototype.getRound = function () {
         return this.round;
     };
+    Game.prototype.incrementMove = function () {
+        this.move++;
+        //change move to start if last player moved
+        if (this.move > (this.players.length - 1)) {
+            this.move = 0;
+        }
+    };
+    Game.prototype.setPlayerMove = function (mve) {
+        this.move = mve;
+    };
     Game.prototype.getPlayerMove = function () {
         return this.move;
     };
     Game.prototype.getPlayers = function () {
-        return this.getPlayers();
+        return this.players;
     };
     Game.prototype.setPlayer = function (plyr) {
         this.player = plyr;
     };
     Game.prototype.getHand = function (playerNum) {
         return this.round.getHand(playerNum);
+    };
+    Game.prototype.increaseScore = function (playerNum) {
+        this.players[playerNum].increaseScore();
+    };
+    Game.prototype.getTotalScore = function () {
+        var totScore = 0;
+        for (var i = 0; i < Object.keys(this.players).length; i++) {
+            totScore = totScore + this.players[i].getScore();
+        }
+        return totScore;
+    };
+    Game.prototype.getScores = function () {
+        var scoreString = "";
+        for (var i = 0; i < Object.keys(this.players).length; i++) {
+            scoreString += " " + this.players[i].getPlayerName() + " Score- " + this.players[i].getScore();
+        }
+        return scoreString;
+    };
+    Game.prototype.checkForWinner = function () {
+        for (var i = 0; i < Object.keys(this.players).length; i++) {
+            console.log("score p" + i + " " + this.players[i].getScore());
+            if (this.players[i].getScore() == 25) {
+                return true;
+            }
+        }
+        return false;
+    };
+    Game.prototype.getWinner = function () {
+        var winnerPos;
+        for (var i = 0; i < Object.keys(this.players).length; i++) {
+            console.log("score p" + i + " " + this.players[i].getScore());
+            if (this.players[i].getScore() == 25) {
+                winnerPos = i;
+            }
+        }
+        return winnerPos;
     };
     return Game;
 }());
@@ -378,7 +425,7 @@ var Player = /** @class */ (function () {
     Player.prototype.setScore = function (value) {
         this.score = value;
     };
-    Player.prototype.increaseScore = function (value) {
+    Player.prototype.increaseScore = function () {
         this.score += 5;
     };
     Player.prototype.getHand = function () {
@@ -387,14 +434,24 @@ var Player = /** @class */ (function () {
     Player.prototype.setHand = function (hnd) {
         this.hand = hnd;
     };
+    Player.prototype.getIsCPU = function () {
+        return this.isCPU;
+    };
+    Player.prototype.setAsCPU = function () {
+        this.isCPU = true;
+    };
+    Player.prototype.removeFromHand = function (crd) {
+        this.hand.removeCard(crd);
+    };
     return Player;
 }()); //Player
 //Typescript implementation of a round of 25
 var Round = /** @class */ (function () {
-    function Round(playerCount) {
+    function Round(playerCount, realCount) {
         //array of players
         this.players = new Array();
         this.playerCount = playerCount;
+        this.realCount = realCount;
         this.init();
     }
     Round.prototype.init = function () {
@@ -403,15 +460,19 @@ var Round = /** @class */ (function () {
         //Pick trump Card
         this.trump = this.deck.pickCard();
         this.deck.assignTrump(this.trump.getSuit());
-        this.setupPlayers();
+        this.setupPlayers(this.realCount);
         this.testRound();
     }; //init
     //setup players array
-    Round.prototype.setupPlayers = function () {
+    Round.prototype.setupPlayers = function (realCount) {
         //generate hands for each player
         for (var i = 0; i < this.playerCount; i++) {
             //new Hand for Player
             var newPlayer = new Player("Player " + (i + 1), 0);
+            //if not a player add player as a cpu
+            if (i >= realCount) {
+                newPlayer.setAsCPU();
+            }
             var newHand = new Hand();
             //draw 5 card and add to hand
             for (var j = 0; j < 5; j++) {
@@ -428,10 +489,10 @@ var Round = /** @class */ (function () {
         //first card is winner until beat
         var winner = cardArray[0];
         //iterate over array of cards
-        for (var i = 1; i < cardArray.length; i++) {
+        for (var i = 1; i < Object.keys(cardArray).length; i++) {
             var tempCrd = cardArray[i];
-            //if temp card is a trump or same suit compare values
-            if (tempCrd.getIsTrump() || winner.getSuit() == tempCrd.getSuit()) {
+            //if temp card is a trump, ace of hearts(34) or same suit compare values
+            if (tempCrd.getIsTrump() || winner.getSuit() == tempCrd.getSuit() || tempCrd.getValue() == 34) {
                 //compare values (higher value wins)
                 if (tempCrd.getValue() > winner.getValue()) {
                     winner = tempCrd;
@@ -441,11 +502,8 @@ var Round = /** @class */ (function () {
         return winner;
     }; //decideWinningCard
     Round.prototype.start = function () {
-        //console.log("start");
         for (var i = 1; i < this.players.length; i++) {
-            // console.log(this.players[i].getHand().getCards().toString());
             var cards = this.players[i].getHand().getCards();
-            //console.log(cards[0].getImageName());
         }
     };
     Round.prototype.getTrump = function () {

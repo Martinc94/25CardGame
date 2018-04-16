@@ -12,7 +12,7 @@ class Hand {
     }
     
     public removeCard(crd: Card) {
-		this.cards=this.removeFromArray(this.cards,crd);
+        this.cards=this.removeFromArray(this.cards,crd);
 	}
 
     private removeFromArray(array, value) {

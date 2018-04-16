@@ -30,8 +30,8 @@ class Card {
         return this.trump; 
     }
 
-    public toString(): string {
-        return `${this.name} of ${this.suit}`; 
+    public getFullName(): string {
+        return this.name+" of "+this.suit; 
     }
 
     public getImageName(): string {
