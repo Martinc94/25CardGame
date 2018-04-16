@@ -60,7 +60,7 @@ class Deck {
 
             switch(tmpCrd.getName()) { 
                 case "ace": { 
-                   if(tmpCrd.getSuit()=="Hearts"){
+                   if(tmpCrd.getSuit()=="hearts"){
                         tmpCrd.assignTrump();
                         tmpCrd.assignValue(34);
                    } 
@@ -68,7 +68,7 @@ class Deck {
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(33);
                         }
-                        else if(tmpCrd.getSuit()=="Diamonds"){
+                        else if(tmpCrd.getSuit()=="diamonds"){
                             tmpCrd.assignValue(1);
                         } 
                         else{
@@ -78,7 +78,7 @@ class Deck {
                    break; 
                 } 
                 case "2": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(23);
                         }
@@ -96,7 +96,7 @@ class Deck {
                     break; 
                  } 
                  case "3": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(24);
                         }
@@ -113,7 +113,7 @@ class Deck {
                     break; 
                  } 
                  case "4": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(25);
                         }
@@ -130,7 +130,7 @@ class Deck {
                     break; 
                  } 
                  case "5": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(36);
                         }
@@ -147,7 +147,7 @@ class Deck {
                     break; 
                  } 
                  case "6": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(26);
                         }
@@ -164,7 +164,7 @@ class Deck {
                     break; 
                  } 
                  case "7": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(27);
                         }
@@ -181,7 +181,7 @@ class Deck {
                     break; 
                  } 
                  case "8": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(28);
                         }
@@ -198,7 +198,7 @@ class Deck {
                     break; 
                  } 
                  case "9": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(29);
                         }
@@ -215,7 +215,7 @@ class Deck {
                     break; 
                  } 
                  case "10": { 
-                    if(tmpCrd.getSuit()=="Hearts"||tmpCrd.getSuit()=="Diamonds"){
+                    if(tmpCrd.getSuit()=="hearts"||tmpCrd.getSuit()=="diamonds"){
                         if(tmpCrd.getIsTrump()){
                             tmpCrd.assignValue(30);
                         }
