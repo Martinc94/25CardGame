@@ -7,10 +7,12 @@ class Round {
     private trump : Card;
     private playerCount : number;
     private realCount: number;
+    private roundCount: number;
 
     constructor(playerCount:number,realCount:number) {
         this.playerCount=playerCount;
         this.realCount=realCount;
+        this.roundCount=1;
         this.init();
     }
 
@@ -25,9 +27,39 @@ class Round {
 
         this.setupPlayers(this.realCount);
 
-        this.testRound();
+    }//init
+
+    public newRound(){
+        //initialise new deck
+        this.deck = new Deck();
+
+        this.roundCount++;
+
+        //Pick trump Card
+        this.trump=this.deck.pickCard();
+
+        this.deck.assignTrump(this.trump.getSuit());
+
+        this.redeal();
 
     }//init
+
+    //setup players array
+    private redeal(){
+        //generate hands for each player
+        for(var i = 0; i < this.playerCount; i++){
+            var newHand = new Hand();
+
+            //draw 5 card and add to hand
+            for(var j = 0; j < 5; j++){
+                var crd = this.deck.pickCard();
+                newHand.addCard(crd);
+            }
+
+            //give hand to player
+            this.players[i].setHand(newHand);
+        }//for
+    }
 
     //setup players array
     private setupPlayers(realCount){
@@ -76,12 +108,6 @@ class Round {
         return winner;
     }//decideWinningCard
 
-    public start(){
-        for(var i = 1; i < this.players.length; i++){
-            var cards =this.players[i].getHand().getCards();
-        }
-    }
-
     public getTrump(): Card {
         return this.trump; 
     } 
@@ -93,15 +119,8 @@ class Round {
     public getHand(playerNum): Hand {
         return this.players[playerNum].getHand(); 
     } 
-    
-    private testRound(){
-        //take one card from each player
 
-        //add to array
-
-        //get winner from array 
-
-        //print winning card and player name
-       
+    public getRoundCount(): number {
+        return this.roundCount; 
     }
 }//Round
