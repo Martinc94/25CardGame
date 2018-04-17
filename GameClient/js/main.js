@@ -11,7 +11,6 @@ var trump;
 var placeHolder1,placeHolder2,placeHolder3;
 var crds;
 var cpuCrds;
-//var playersSelectedCard;
 var selectedCardArray={};
 
 //Array of card sprites
@@ -141,25 +140,72 @@ function start () {
   if(game25.getPlayerMove()==playerNumber){
     displayText("Flip over Trump card");
   }
-  
 }//start
+
+function newRound () {
+  removeAll();
+  //newRound
+  game25.newRound();
+  setupCards();
+
+  //Allow deck flip
+  if(game25.getPlayerMove()==playerNumber){
+    deck.inputEnabled = true;
+    deck.events.onInputDown.add(flipTrump, this);
+  }
+
+  //load textarea
+  gameText = document.getElementById('gameText');
+  displayText("NEW ROUND");
+  displayScore();
+
+  //get cards from server //TODO
+  if(game25.getPlayerMove()==playerNumber){
+    displayText("Flip over Trump card");
+  }
+  else{
+    //cpu turn over Trump
+    flipTrump();
+  }
+}//start
+
+function setupCards(){
+  //deck
+  deck = this.game.add.sprite(1080,game.world.centerY-80,'cardBack');
+  deck.scale.setTo(cardscale,cardscale);
+  deck.inputEnabled = false;
+  deck.visible = true;
+
+  placeHolder1 = this.game.add.sprite(game.world.centerX-180,game.world.centerY-80,'cardPlaceholder');
+  placeHolder1.scale.setTo(cardscale,cardscale);
+  placeHolder1.visible = false;
+
+  placeHolder2 = this.game.add.sprite(game.world.centerX-50,game.world.centerY-80,'cardPlaceholder');
+  placeHolder2.scale.setTo(cardscale,cardscale);
+  placeHolder2.visible = false;
+
+  placeHolder3 = this.game.add.sprite(game.world.centerX-50,game.world.centerY-80,'cardPlaceholder');
+  placeHolder3.scale.setTo(cardscale,cardscale);
+  placeHolder3.visible = false;
+}
 
 function displayText(txt){
   gameText.innerHTML +="[GAME]"+txt+"\n";
   gameText.scrollTop = gameText.scrollHeight;
 }//displayText
 
-function displayScore(txt){
-  gameText.innerHTML +="[SCORE]"+txt+"\n";
+function displayScore(){
+  gameText.innerHTML +="[SCORE]"+game25.getScores()+"\n";
   gameText.scrollTop = gameText.scrollHeight;
 }//displayScore
 
 function flipTrump () {
   //assign trump
-  trump = game25.getRound().getTrump();//START HERE
+  trump = game25.getRound().getTrump();
 
   //place trump at top of deck
   deck.visible=false;
+  deck.inputEnabled = false;
 
   placeHolder3 = this.game.add.sprite(1080,game.world.centerY-80,trump.getImageName());
   placeHolder3.scale.setTo(cardscale,cardscale);
@@ -231,7 +277,7 @@ function checkForMove(){
 
     //add score 
     game25.increaseScore(winningPlayer);
-    displayScore(game25.getScores());
+    displayScore();
 
     //set winner to play next
     game25.setPlayerMove(winningPlayer);
@@ -240,6 +286,7 @@ function checkForMove(){
     selectedCardArray={};
   }
 
+  checkForRoundover();
   checkForWinner();
   
   if(game25.getPlayerMove()==playerNumber){
@@ -249,27 +296,60 @@ function checkForMove(){
   else{
     //computers move
     cpuMove(game25.getPlayerMove());
-    
   }
 }//checkForMove
 
 function checkForWinner(){
-  var isWinner;
-  //round over //maybe have to increase for larger games 
-  if(game25.getTotalScore()==25||game25.getTotalScore()==50||game25.getTotalScore()==75||game25.getTotalScore()==100){
-    //check if winner
-    if(game25.checkForWinner()){
-      //display winner
-      displayText("Player "+(game25.getWinner()+1)+" is the Winner");
-    }
-    else{
-      console.log("no winner new round");
-      //new round TODO  
-
+  //var isWinner;
+  if(game25.checkForWinner()){
+    //display winner
+    gameOver();
+  }
+  else{
+    //round over //maybe have to increase for larger games 
+    if(game25.getTotalScore()==25&&game25.getRound().getRoundCount()==1||
+    game25.getTotalScore()==50&&game25.getRound().getRoundCount()==2||
+    game25.getTotalScore()==75&&game25.getRound().getRoundCount()==3||
+    game25.getTotalScore()==100&&game25.getRound().getRoundCount()==4){
+      //check if winner
+      if(game25.checkForWinner()){
+        gameOver();
+      }
+      else{
+        //new round TODO  
+        newRound();
+      }
     }
   }
-  return isWinner;
+  //return isWinner;
 }
+
+function checkForRoundover(){
+  var isRoundover=false;
+  //round over //maybe have to increase for larger games 
+  if(game25.getTotalScore()==25||game25.getTotalScore()==50||game25.getTotalScore()==75||game25.getTotalScore()==100){
+      isRoundover=true;
+      checkForWinner();
+  }
+  else{
+    isRoundover=false;
+  } 
+  return isRoundover;
+}
+
+function gameOver(){
+  //remove all sprites
+  removeAll();
+  //display winner
+  displayText("Player "+(game25.getWinner()+1)+" is the Winner");
+
+  //TODO Game over screen
+
+}
+
+function removeAll(sprite) {
+  game.world.removeAll();
+}//removeAll
 
 function returnWinnerIndex(winCrd) {
   var index;
@@ -306,8 +386,6 @@ function cardPressed(crd) {
 
   checkForMove();
 }//cardPressed
-
-
 
 function cpuMove (cpuNumber) {
   var plyrs = game25.getPlayers();

@@ -315,14 +315,23 @@ var Game = /** @class */ (function () {
     function Game(gameSize, players) {
         //TODO - get cards from server
         this.round = new Round(gameSize, players);
-        this.round.start();
         //init variables
         this.players = this.round.getPlayers();
-        //get whose move it is from server
+        //get whose dealer/move it is from server
         this.move = 0;
+        this.dealerNumber = 0;
     }
     Game.prototype.getRound = function () {
         return this.round;
+    };
+    Game.prototype.newRound = function () {
+        //setup a new round
+        this.round.newRound();
+        this.dealerNumber++;
+        if (this.dealerNumber > (this.players.length - 1)) {
+            this.dealerNumber = 0;
+        }
+        this.move = this.dealerNumber;
     };
     Game.prototype.incrementMove = function () {
         this.move++;
@@ -365,8 +374,7 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.checkForWinner = function () {
         for (var i = 0; i < Object.keys(this.players).length; i++) {
-            console.log("score p" + i + " " + this.players[i].getScore());
-            if (this.players[i].getScore() == 25) {
+            if (this.players[i].getScore() >= 25) {
                 return true;
             }
         }
@@ -375,7 +383,6 @@ var Game = /** @class */ (function () {
     Game.prototype.getWinner = function () {
         var winnerPos;
         for (var i = 0; i < Object.keys(this.players).length; i++) {
-            console.log("score p" + i + " " + this.players[i].getScore());
             if (this.players[i].getScore() == 25) {
                 winnerPos = i;
             }
@@ -452,6 +459,7 @@ var Round = /** @class */ (function () {
         this.players = new Array();
         this.playerCount = playerCount;
         this.realCount = realCount;
+        this.roundCount = 1;
         this.init();
     }
     Round.prototype.init = function () {
@@ -461,8 +469,30 @@ var Round = /** @class */ (function () {
         this.trump = this.deck.pickCard();
         this.deck.assignTrump(this.trump.getSuit());
         this.setupPlayers(this.realCount);
-        this.testRound();
     }; //init
+    Round.prototype.newRound = function () {
+        //initialise new deck
+        this.deck = new Deck();
+        this.roundCount++;
+        //Pick trump Card
+        this.trump = this.deck.pickCard();
+        this.deck.assignTrump(this.trump.getSuit());
+        this.redeal();
+    }; //init
+    //setup players array
+    Round.prototype.redeal = function () {
+        //generate hands for each player
+        for (var i = 0; i < this.playerCount; i++) {
+            var newHand = new Hand();
+            //draw 5 card and add to hand
+            for (var j = 0; j < 5; j++) {
+                var crd = this.deck.pickCard();
+                newHand.addCard(crd);
+            }
+            //give hand to player
+            this.players[i].setHand(newHand);
+        } //for
+    };
     //setup players array
     Round.prototype.setupPlayers = function (realCount) {
         //generate hands for each player
@@ -501,11 +531,6 @@ var Round = /** @class */ (function () {
         }
         return winner;
     }; //decideWinningCard
-    Round.prototype.start = function () {
-        for (var i = 1; i < this.players.length; i++) {
-            var cards = this.players[i].getHand().getCards();
-        }
-    };
     Round.prototype.getTrump = function () {
         return this.trump;
     };
@@ -515,11 +540,8 @@ var Round = /** @class */ (function () {
     Round.prototype.getHand = function (playerNum) {
         return this.players[playerNum].getHand();
     };
-    Round.prototype.testRound = function () {
-        //take one card from each player
-        //add to array
-        //get winner from array 
-        //print winning card and player name
+    Round.prototype.getRoundCount = function () {
+        return this.roundCount;
     };
     return Round;
 }()); //Round
