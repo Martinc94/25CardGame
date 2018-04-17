@@ -25,6 +25,7 @@ var GameState = {
     this.load.image('cardBack','assets/images/cards/backOfCard.png');
     this.load.image('cardPlaceholder','assets/images/cards/cardPlaceholder.png');
     this.load.image('button','assets/images/button.png');
+    this.load.image('restartButton','assets/images/restartbutton.png');
 
   //Clubs
     this.load.image('ace_of_clubs','assets/images/cards/ace_of_clubs.png');
@@ -141,6 +142,10 @@ function start () {
     displayText("Flip over Trump card");
   }
 }//start
+
+function restart(){
+  game.state.start('GameState');
+}
 
 function newRound () {
   removeAll();
@@ -337,20 +342,6 @@ function checkForRoundover(){
   return isRoundover;
 }
 
-function gameOver(){
-  //remove all sprites
-  removeAll();
-  //display winner
-  displayText("Player "+(game25.getWinner()+1)+" is the Winner");
-
-  //TODO Game over screen
-
-}
-
-function removeAll(sprite) {
-  game.world.removeAll();
-}//removeAll
-
 function returnWinnerIndex(winCrd) {
   var index;
   for (var i = 0; i < Object.keys(selectedCardArray).length; i++) {
@@ -417,3 +408,22 @@ function cpuMove (cpuNumber) {
 
   checkForMove();
 }//cpuMove
+
+function removeAll(sprite) {
+  game.world.removeAll();
+}//removeAll
+
+function gameOver(){
+  //remove all sprites
+  removeAll();
+  //display winner
+  displayText("Player "+(game25.getWinner()+1)+" is the Winner");
+
+  //Display game over 
+  var text = "Game over";
+  var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
+  var t = game.add.text(game.world.centerX-170, game.world.centerY, text, style);
+
+  button = game.add.button(game.world.centerX-70, game.world.centerY+170, 'restartButton', restart, this, 2, 1, 0);
+  button.scale.setTo(0.5,0.5);
+}
