@@ -4,22 +4,32 @@ class Game {
     private players: Player[];
     private player: Player;
     private conn: Connection;
+    private dealerNumber: number;
 
     constructor(gameSize:number,players:number) {
         //TODO - get cards from server
 
         this.round = new Round(gameSize,players);
-        this.round.start();
-
         //init variables
         this.players=this.round.getPlayers();
-
-        //get whose move it is from server
+        //get whose dealer/move it is from server
         this.move=0;
+        this.dealerNumber=0;
     }
 
     public getRound(): Round {
         return this.round; 
+    }
+
+    public newRound(): void {
+        //setup a new round
+        this.round.newRound();
+        this.dealerNumber++;
+
+        if(this.dealerNumber>(this.players.length-1)){
+            this.dealerNumber=0;
+        }
+        this.move=this.dealerNumber;
     } 
 
     public incrementMove(): void {
@@ -29,6 +39,7 @@ class Game {
             this.move=0;
         }
     } 
+
     public setPlayerMove(mve: number): void {
         this.move=mve;
     }
@@ -72,8 +83,7 @@ class Game {
 
     public checkForWinner():boolean{
         for (var i = 0; i < Object.keys(this.players).length; i++) {
-            console.log("score p"+i+" "+  this.players[i].getScore());
-            if(this.players[i].getScore()==25){
+            if(this.players[i].getScore()>=25){
               return true;
             }
           } 
@@ -83,7 +93,6 @@ class Game {
     public getWinner():number{
         var winnerPos;
         for (var i = 0; i < Object.keys(this.players).length; i++) {
-            console.log("score p"+i+" "+  this.players[i].getScore());
             if(this.players[i].getScore()==25){
               winnerPos=i;
             }
