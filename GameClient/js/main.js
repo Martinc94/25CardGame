@@ -27,6 +27,12 @@ var GameState = {
     this.load.image('button','assets/images/button.png');
     this.load.image('restartButton','assets/images/restartbutton.png');
 
+    //message dialog
+    this.load.image("boxBack", "assets/images/boxBack.png");
+    this.load.image("closeButton", "assets/images/closeButton.png");
+    this.load.image("yesButton", "assets/images/yes.png");
+    this.load.image("noButton", "assets/images/no.png");
+
   //Clubs
     this.load.image('ace_of_clubs','assets/images/cards/ace_of_clubs.png');
     this.load.image('2_of_clubs','assets/images/cards/2_of_clubs.png');
@@ -109,8 +115,7 @@ var GameState = {
     placeHolder3.visible = false;
   },
   update:function(){
-  }
-
+  },
 };
 
 game.state.add('GameState',GameState);
@@ -219,6 +224,9 @@ function flipTrump () {
 
   //Deals cards to players and displayes to the screen
   deal();
+
+  //check if top card can be robbed
+  robCheck();
 }//flipTrump
 
 function deal() {
@@ -257,7 +265,7 @@ function deal() {
 function displayTrump(){
  displayText(trump.getFullName()+" is the trump card");
  checkForMove();
-}
+}//displayTrump
 
 function enableInput(){
   for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
@@ -327,7 +335,7 @@ function checkForWinner(){
     }
   }
   //return isWinner;
-}
+}//checkForWinner
 
 function checkForRoundover(){
   var isRoundover=false;
@@ -340,7 +348,7 @@ function checkForRoundover(){
     isRoundover=false;
   } 
   return isRoundover;
-}
+}//checkForRoundover
 
 function returnWinnerIndex(winCrd) {
   var index;
@@ -350,7 +358,7 @@ function returnWinnerIndex(winCrd) {
     }
   } 
   return index;
-}
+}//returnWinnerIndex
 
 function cardPressed(crd) {
   disableInput();
@@ -409,9 +417,105 @@ function cpuMove (cpuNumber) {
   checkForMove();
 }//cpuMove
 
+function robCheck() {
+  //if player has ace in hand ask if hand to rob
+  var plyrs=game25.getPlayers();
+  var playerCards = plyrs[1].getHand().getCards();
+
+  for (var i = 0; i < Object.keys(playerCards).length; i++) {
+    if(playerCards[i].getName()=="ace"&&playerCards[i].getSuit()==trump.getSuit()){
+      disableInput();
+      //dialog ask if want to rob
+      robMessageBox();
+    }
+  }//for
+
+  //if dealer turns up trump ace ask if want to rob
+  if(trump.getName()=="ace"){
+    console.log("ACE can be robbed");
+  }
+  
+}//robCheck
+
+function renageCheck() {
+  //todo
+}//renageCheck
+
 function removeAll(sprite) {
   game.world.removeAll();
 }//removeAll
+
+function robMessageBox() {
+  this.showRobMessageBox("Do you want to rob the trump card!");
+}
+
+function showRobMessageBox(text) {
+  var w=510,h=160;
+
+  //just in case the message box already exists destroy it
+  if (this.msgBox) {
+      this.msgBox.destroy();
+  }
+  //make a group to hold all the elements
+  var msgBox = game.add.group();
+  //make the back of the message box
+  var back = game.add.sprite(0, 0, "boxBack");
+  var yesButton = game.add.sprite(120, 100, "yesButton");
+  var noButton = game.add.sprite(280, 100, "noButton");
+  yesButton.scale.setTo(0.4,0.4);
+  noButton.scale.setTo(0.4,0.4);
+
+  //make a text field
+  var text1 = game.add.text(30, 0, text);
+  text1.wordWrap = true;
+  text1.wordWrapWidth = w * 0.9;
+  
+  //set the width and height 
+  back.width = w;
+  back.height = h;
+
+  //add the elements to the group
+  msgBox.add(back);
+  msgBox.add(yesButton);
+  msgBox.add(noButton);
+  msgBox.add(text1);
+
+  //enable the button for input
+  yesButton.inputEnabled = true;
+  //add a listener to destroy the box when the button is pressed
+  yesButton.events.onInputDown.add(this.yesRobClick, this);
+
+  //enable the button for input
+  noButton.inputEnabled = true;
+  //add a listener to destroy the box when the button is pressed
+  noButton.events.onInputDown.add(this.noRobClick, this);
+
+  //set the message box in the center of the screen
+  msgBox.x = (game.width / 2 - msgBox.width / 2)-70 ;
+  msgBox.y = game.height / 2 - msgBox.height / 2;
+  
+  //set the text in the middle of the message box
+  text1.x = back.width / 2 - text1.width / 2;
+  text1.y = (back.height / 2 - text1.height / 2)-30;
+
+  //make a state reference to the messsage box
+  this.msgBox = msgBox;
+}
+
+function yesRobClick() {
+  this.msgBox.destroy();
+
+  //TODO Select card to swap
+
+  //swapCard();
+
+  //checkForMove();
+}
+
+function noRobClick() {
+  this.msgBox.destroy();
+  checkForMove();
+}
 
 function gameOver(){
   //remove all sprites
@@ -426,4 +530,4 @@ function gameOver(){
 
   button = game.add.button(game.world.centerX-70, game.world.centerY+170, 'restartButton', restart, this, 2, 1, 0);
   button.scale.setTo(0.5,0.5);
-}
+}//gameOver
