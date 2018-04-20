@@ -2,46 +2,39 @@
 
 class Round {
     private deck : Deck;
-    //array of players
     private players = new Array<Player>();
     private trump : Card;
     private playerCount : number;
     private realCount: number;
     private roundCount: number;
+    private robChecked: boolean;
 
     constructor(playerCount:number,realCount:number) {
         this.playerCount=playerCount;
         this.realCount=realCount;
         this.roundCount=1;
+        this.robChecked=false;
         this.init();
     }
 
     private init(){
         //initialise new deck
         this.deck = new Deck();
-
         //Pick trump Card
         this.trump=this.deck.pickCard();
-
         this.deck.assignTrump(this.trump.getSuit());
-
         this.setupPlayers(this.realCount);
-
     }//init
 
     public newRound(){
         //initialise new deck
         this.deck = new Deck();
-
         this.roundCount++;
-
+        this.robChecked=false;
         //Pick trump Card
         this.trump=this.deck.pickCard();
-
         this.deck.assignTrump(this.trump.getSuit());
-
         this.redeal();
-
     }//init
 
     //setup players array
@@ -55,11 +48,10 @@ class Round {
                 var crd = this.deck.pickCard();
                 newHand.addCard(crd);
             }
-
             //give hand to player
             this.players[i].setHand(newHand);
         }//for
-    }
+    }//redeal
 
     //setup players array
     private setupPlayers(realCount){
@@ -74,7 +66,7 @@ class Round {
             }
 
             var newHand = new Hand();
-
+            
             //draw 5 card and add to hand
             for(var j = 0; j < 5; j++){
                 var crd = this.deck.pickCard();
@@ -87,7 +79,7 @@ class Round {
             //add new player to array
             this.players.push(newPlayer);
         }//for
-    }
+    }//setupPlayers
 
     public decideWinningCard(cardArray: Array<Card>): Card {
         //first card is winner until beat
@@ -110,17 +102,29 @@ class Round {
 
     public getTrump(): Card {
         return this.trump; 
-    } 
+    }//getTrump
 
     public getPlayers(): Player[] {
         return this.players; 
-    } 
+    }//getPlayers
 
     public getHand(playerNum): Hand {
         return this.players[playerNum].getHand(); 
-    } 
+    }//getHand 
+
+    public swapCard(playerNum,remCrd,addCrd): void {
+        this.players[playerNum].swapCardFromHand(remCrd,addCrd);
+    }//swapCard
 
     public getRoundCount(): number {
         return this.roundCount; 
-    }
+    }//getRoundCount
+
+    public setRobChecked(): void {
+        this.robChecked=true; 
+    }//setRobChecked
+
+    public getRobChecked(): boolean {
+        return this.robChecked; 
+    }//getRobChecked
 }//Round

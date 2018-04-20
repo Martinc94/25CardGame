@@ -10,6 +10,11 @@ class Hand {
     public getCards(): Array<Card> {
         return this.cards;
     }
+
+    public swapCard(remCrd: Card,addCrd: Card) {
+        this.cards=this.removeFromArray(this.cards,remCrd);
+        this.addCard(addCrd);
+	}
     
     public removeCard(crd: Card) {
         this.cards=this.removeFromArray(this.cards,crd);

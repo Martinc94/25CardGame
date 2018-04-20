@@ -47,6 +47,10 @@ class Player {
     this.isCPU = true;
   }
 
+  public swapCardFromHand(remCrd,addCrd) {
+    this.hand.swapCard(remCrd,addCrd);
+  }
+
   public removeFromHand(crd) {
     this.hand.removeCard(crd);
   }
