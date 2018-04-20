@@ -8,16 +8,17 @@ var playerNumber = 0;
 var cpuNumber = 1;
 var deck;
 var trump;
-var placeHolder1,placeHolder2,placeHolder3;
+var placeHolder1,placeHolder2,placeHolder3,placeHolder4;
 var crds;
 var cpuCrds;
 var selectedCardArray={};
-
 //Array of card sprites
 var playerCardArray={};
 var cpuCardArray={};
 //Html Textarea
 var gameText;
+//group of playersHand
+var playerHand,cpuHand;
 
 var GameState = {
   preload: function() {
@@ -33,7 +34,7 @@ var GameState = {
     this.load.image("yesButton", "assets/images/yes.png");
     this.load.image("noButton", "assets/images/no.png");
 
-  //Clubs
+    //Clubs
     this.load.image('ace_of_clubs','assets/images/cards/ace_of_clubs.png');
     this.load.image('2_of_clubs','assets/images/cards/2_of_clubs.png');
     this.load.image('3_of_clubs','assets/images/cards/3_of_clubs.png');
@@ -47,7 +48,7 @@ var GameState = {
     this.load.image('jack_of_clubs','assets/images/cards/jack_of_clubs.png');
     this.load.image('queen_of_clubs','assets/images/cards/queen_of_clubs.png');
     this.load.image('king_of_clubs','assets/images/cards/king_of_clubs.png');
-  //Hearts
+    //Hearts
     this.load.image('ace_of_hearts','assets/images/cards/ace_of_hearts.png');
     this.load.image('2_of_hearts','assets/images/cards/2_of_hearts.png');
     this.load.image('3_of_hearts','assets/images/cards/3_of_hearts.png');
@@ -61,7 +62,7 @@ var GameState = {
     this.load.image('jack_of_hearts','assets/images/cards/jack_of_hearts.png');
     this.load.image('queen_of_hearts','assets/images/cards/queen_of_hearts.png');
     this.load.image('king_of_hearts','assets/images/cards/king_of_hearts.png');
-  //Spades
+    //Spades
     this.load.image('ace_of_spades','assets/images/cards/ace_of_spades.png');
     this.load.image('2_of_spades','assets/images/cards/2_of_spades.png');
     this.load.image('3_of_spades','assets/images/cards/3_of_spades.png');
@@ -75,7 +76,7 @@ var GameState = {
     this.load.image('jack_of_spades','assets/images/cards/jack_of_spades.png');
     this.load.image('queen_of_spades','assets/images/cards/queen_of_spades.png');
     this.load.image('king_of_spades','assets/images/cards/king_of_spades.png');
-  //Diamonds
+    //Diamonds
     this.load.image('ace_of_diamonds','assets/images/cards/ace_of_diamonds.png');
     this.load.image('2_of_diamonds','assets/images/cards/2_of_diamonds.png');
     this.load.image('3_of_diamonds','assets/images/cards/3_of_diamonds.png');
@@ -89,6 +90,11 @@ var GameState = {
     this.load.image('jack_of_diamonds','assets/images/cards/jack_of_diamonds.png');
     this.load.image('queen_of_diamonds','assets/images/cards/queen_of_diamonds.png');
     this.load.image('king_of_diamonds','assets/images/cards/king_of_diamonds.png');
+    //placeholder trumps
+    this.load.image('hearts','assets/images/cards/hearts.png');
+    this.load.image('clubs','assets/images/cards/clubs.png');
+    this.load.image('spades','assets/images/cards/spades.png');
+    this.load.image('diamonds','assets/images/cards/diamonds.png');
   },
   create:function(){
     game.stage.backgroundColor = "#17b52f";
@@ -150,7 +156,7 @@ function start () {
 
 function restart(){
   game.state.start('GameState');
-}
+}//restart
 
 function newRound () {
   removeAll();
@@ -194,10 +200,10 @@ function setupCards(){
   placeHolder2.scale.setTo(cardscale,cardscale);
   placeHolder2.visible = false;
 
-  placeHolder3 = this.game.add.sprite(game.world.centerX-50,game.world.centerY-80,'cardPlaceholder');
+  placeHolder3 = this.game.add.sprite(1080,game.world.centerY-80,'cardPlaceholder');
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.visible = false;
-}
+}//setupCards
 
 function displayText(txt){
   gameText.innerHTML +="[GAME]"+txt+"\n";
@@ -230,6 +236,18 @@ function flipTrump () {
 }//flipTrump
 
 function deal() {
+
+  if (this.playerHand) {
+    this.playerHand.destroy();
+  }
+
+  if (this.cpuHand) {
+    this.cpuHand.destroy();
+  }
+
+  playerHand = game.add.group();
+  cpuHand = game.add.group();
+
   placeHolder1.visible = true;
   placeHolder2.visible = true;
 
@@ -259,7 +277,14 @@ function deal() {
   cpuCardArray[4]=this.game.add.sprite(cardDistance*5,50,'cardBack');
   cpuCardArray[4].scale.setTo(cardscale,cardscale);
 
-  checkForMove(); 
+  //add players hand to a group
+  for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
+    playerHand.add(playerCardArray[i]);
+  }
+
+  for (i = 0; i < Object.keys(cpuCardArray).length; i++) {
+    cpuHand.add(cpuCardArray[i]);
+  }
 }//deal
 
 function displayTrump(){
@@ -418,28 +443,37 @@ function cpuMove (cpuNumber) {
 }//cpuMove
 
 function robCheck() {
-  //if player has ace in hand ask if hand to rob
-  var plyrs=game25.getPlayers();
-  var playerCards = plyrs[1].getHand().getCards();
+  var notRobbable=true;
+  //check if player has been asked to rob
+  if(game25.round.getRobChecked()){}
+  else{
+    //if player has ace in hand ask if hand to rob
+    var plyrs=game25.getPlayers();
+    var playerCards = plyrs[playerNumber].getHand().getCards();
 
-  for (var i = 0; i < Object.keys(playerCards).length; i++) {
-    if(playerCards[i].getName()=="ace"&&playerCards[i].getSuit()==trump.getSuit()){
+    for (var i = 0; i < Object.keys(playerCards).length; i++) {
+      if(playerCards[i].getName()=="ace"&&playerCards[i].getSuit()==trump.getSuit()){
+        notRobbable=true;
+        disableInput();
+        //dialog ask if want to rob
+        robMessageBox();
+        console.log("has ace");
+      }
+    }//for
+
+    //if dealer turns up trump ace ask if want to rob
+    if(trump.getName()=="ace"&&game25.getPlayerMove()==playerNumber){
+      notRobbable=true;
       disableInput();
-      //dialog ask if want to rob
       robMessageBox();
+      console.log("dealers rob");
     }
-  }//for
+  } 
 
-  //if dealer turns up trump ace ask if want to rob
-  if(trump.getName()=="ace"){
-    console.log("ACE can be robbed");
+  if(notRobbable){
+    checkForMove();
   }
-  
 }//robCheck
-
-function renageCheck() {
-  //todo
-}//renageCheck
 
 function removeAll(sprite) {
   game.world.removeAll();
@@ -447,11 +481,10 @@ function removeAll(sprite) {
 
 function robMessageBox() {
   this.showRobMessageBox("Do you want to rob the trump card!");
-}
+}//robMessageBox
 
 function showRobMessageBox(text) {
   var w=510,h=160;
-
   //just in case the message box already exists destroy it
   if (this.msgBox) {
       this.msgBox.destroy();
@@ -500,22 +533,64 @@ function showRobMessageBox(text) {
 
   //make a state reference to the messsage box
   this.msgBox = msgBox;
-}
+}//showRobMessageBox
 
 function yesRobClick() {
   this.msgBox.destroy();
-
-  //TODO Select card to swap
-
-  //swapCard();
-
-  //checkForMove();
-}
+  //Select card to swap
+  enableSwapInput();
+  game25.round.setRobChecked();
+}//swapCard
 
 function noRobClick() {
   this.msgBox.destroy();
   checkForMove();
-}
+  game25.round.setRobChecked();
+}//noRobClick
+
+function swapCard(crd) {
+  disableInput();
+  crd.visible =false;
+  var tempCrd;
+
+  //get a hold of card object
+  for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
+    if(crds[i].getImageName()==crd.key){
+      tempCrd = crds[i];
+    }
+  }//for 
+
+  game25.round.swapCard(playerNumber,tempCrd,trump);
+
+  //replace trump with placeholder trump card
+  placeHolder3 = this.game.add.sprite(1080,game.world.centerY-80,trump.getSuit());
+  placeHolder3.scale.setTo(cardscale,cardscale);
+  placeHolder3.events.onInputDown.add(displayTrump, this);
+  placeHolder3.inputEnabled = true;
+
+  placeHolder4 = this.game.add.sprite(970,game.world.centerY-80,'cardBack');
+  placeHolder4.scale.setTo(cardscale,cardscale);
+  placeHolder4.visible = true;
+
+  //remove hands
+  playerHand.destroy();
+  cpuHand.destroy();
+
+  deal();
+
+  checkForMove();
+}//swapCard
+
+function enableSwapInput(){
+  for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
+      playerCardArray[i].events.onInputDown.add(swapCard,this);
+      playerCardArray[i].inputEnabled = true;
+  } 
+}//enableInput
+
+function renageCheck() {
+  //todo
+}//renageCheck
 
 function gameOver(){
   //remove all sprites

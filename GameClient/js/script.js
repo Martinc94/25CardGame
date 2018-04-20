@@ -311,6 +311,7 @@ var Deck = /** @class */ (function () {
     }; //removeFromArray
     return Deck;
 }()); //Deck
+//Typescript implementation of a 25 game
 var Game = /** @class */ (function () {
     function Game(gameSize, players) {
         //TODO - get cards from server
@@ -320,10 +321,10 @@ var Game = /** @class */ (function () {
         //get whose dealer/move it is from server
         this.move = 0;
         this.dealerNumber = 0;
-    }
+    } //constructor
     Game.prototype.getRound = function () {
         return this.round;
-    };
+    }; //getRound
     Game.prototype.newRound = function () {
         //setup a new round
         this.round.newRound();
@@ -332,46 +333,46 @@ var Game = /** @class */ (function () {
             this.dealerNumber = 0;
         }
         this.move = this.dealerNumber;
-    };
+    }; //newRound
     Game.prototype.incrementMove = function () {
         this.move++;
         //change move to start if last player moved
         if (this.move > (this.players.length - 1)) {
             this.move = 0;
         }
-    };
+    }; //incrementMove
     Game.prototype.setPlayerMove = function (mve) {
         this.move = mve;
-    };
+    }; //setPlayerMove
     Game.prototype.getPlayerMove = function () {
         return this.move;
-    };
+    }; //getPlayerMove
     Game.prototype.getPlayers = function () {
         return this.players;
-    };
+    }; //getPlayers
     Game.prototype.setPlayer = function (plyr) {
         this.player = plyr;
-    };
+    }; //setPlayer
     Game.prototype.getHand = function (playerNum) {
         return this.round.getHand(playerNum);
-    };
+    }; //getHand
     Game.prototype.increaseScore = function (playerNum) {
         this.players[playerNum].increaseScore();
-    };
+    }; //increaseScore
     Game.prototype.getTotalScore = function () {
         var totScore = 0;
         for (var i = 0; i < Object.keys(this.players).length; i++) {
             totScore = totScore + this.players[i].getScore();
         }
         return totScore;
-    };
+    }; //getTotalScore
     Game.prototype.getScores = function () {
         var scoreString = "";
         for (var i = 0; i < Object.keys(this.players).length; i++) {
             scoreString += " " + this.players[i].getPlayerName() + " Score- " + this.players[i].getScore();
         }
         return scoreString;
-    };
+    }; //getScores
     Game.prototype.checkForWinner = function () {
         for (var i = 0; i < Object.keys(this.players).length; i++) {
             if (this.players[i].getScore() >= 25) {
@@ -379,7 +380,7 @@ var Game = /** @class */ (function () {
             }
         }
         return false;
-    };
+    }; //checkForWinner
     Game.prototype.getWinner = function () {
         var winnerPos;
         for (var i = 0; i < Object.keys(this.players).length; i++) {
@@ -388,9 +389,9 @@ var Game = /** @class */ (function () {
             }
         }
         return winnerPos;
-    };
+    }; //getWinner
     return Game;
-}());
+}()); //Game
 //Typescript class that holds players cards
 var Hand = /** @class */ (function () {
     function Hand() {
@@ -401,6 +402,10 @@ var Hand = /** @class */ (function () {
     };
     Hand.prototype.getCards = function () {
         return this.cards;
+    };
+    Hand.prototype.swapCard = function (remCrd, addCrd) {
+        this.cards = this.removeFromArray(this.cards, remCrd);
+        this.addCard(addCrd);
     };
     Hand.prototype.removeCard = function (crd) {
         this.cards = this.removeFromArray(this.cards, crd);
@@ -447,6 +452,9 @@ var Player = /** @class */ (function () {
     Player.prototype.setAsCPU = function () {
         this.isCPU = true;
     };
+    Player.prototype.swapCardFromHand = function (remCrd, addCrd) {
+        this.hand.swapCard(remCrd, addCrd);
+    };
     Player.prototype.removeFromHand = function (crd) {
         this.hand.removeCard(crd);
     };
@@ -455,11 +463,11 @@ var Player = /** @class */ (function () {
 //Typescript implementation of a round of 25
 var Round = /** @class */ (function () {
     function Round(playerCount, realCount) {
-        //array of players
         this.players = new Array();
         this.playerCount = playerCount;
         this.realCount = realCount;
         this.roundCount = 1;
+        this.robChecked = false;
         this.init();
     }
     Round.prototype.init = function () {
@@ -474,6 +482,7 @@ var Round = /** @class */ (function () {
         //initialise new deck
         this.deck = new Deck();
         this.roundCount++;
+        this.robChecked = false;
         //Pick trump Card
         this.trump = this.deck.pickCard();
         this.deck.assignTrump(this.trump.getSuit());
@@ -492,7 +501,7 @@ var Round = /** @class */ (function () {
             //give hand to player
             this.players[i].setHand(newHand);
         } //for
-    };
+    }; //redeal
     //setup players array
     Round.prototype.setupPlayers = function (realCount) {
         //generate hands for each player
@@ -514,7 +523,7 @@ var Round = /** @class */ (function () {
             //add new player to array
             this.players.push(newPlayer);
         } //for
-    };
+    }; //setupPlayers
     Round.prototype.decideWinningCard = function (cardArray) {
         //first card is winner until beat
         var winner = cardArray[0];
@@ -533,16 +542,25 @@ var Round = /** @class */ (function () {
     }; //decideWinningCard
     Round.prototype.getTrump = function () {
         return this.trump;
-    };
+    }; //getTrump
     Round.prototype.getPlayers = function () {
         return this.players;
-    };
+    }; //getPlayers
     Round.prototype.getHand = function (playerNum) {
         return this.players[playerNum].getHand();
-    };
+    }; //getHand 
+    Round.prototype.swapCard = function (playerNum, remCrd, addCrd) {
+        this.players[playerNum].swapCardFromHand(remCrd, addCrd);
+    }; //swapCard
     Round.prototype.getRoundCount = function () {
         return this.roundCount;
-    };
+    }; //getRoundCount
+    Round.prototype.setRobChecked = function () {
+        this.robChecked = true;
+    }; //setRobChecked
+    Round.prototype.getRobChecked = function () {
+        return this.robChecked;
+    }; //getRobChecked
     return Round;
 }()); //Round
 //Typescript class that holds the score of a round of 25
