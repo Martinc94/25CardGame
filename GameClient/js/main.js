@@ -1,9 +1,9 @@
-var game = new Phaser.Game(1200, 700, Phaser.AUTO, 'phaser');
+var game = new Phaser.Game((window.innerWidth * window.devicePixelRatio)-(window.innerWidth/5), (window.innerHeight * window.devicePixelRatio)-200, Phaser.AUTO, 'phaser');
 
-//start button
 var button;
-var cardscale = 0.2;
-var cardDistance = 160;
+var cardscale = window.devicePixelRatio / 5;
+var cardDistance = window.innerWidth/9;
+var cardHeight,cardHeightCpu;
 var game25;
 var playerNumber = 0;
 var cpuNumber = 1;
@@ -100,26 +100,23 @@ var GameState = {
   create:function(){
     game.stage.backgroundColor = "#17b52f";
     //start button
-    button = game.add.button(game.world.centerX-70, game.world.centerY, 'button', start, this, 2, 1, 0);
+    button = game.add.button(game.world.centerX, game.world.centerY, 'button', start, this, 2, 1, 0);
+    button.x-=button.width/4;
     button.scale.setTo(0.5,0.5);
 
     //deck
-    deck = this.game.add.sprite(1080,game.world.centerY-80,'cardBack');
+    deck = this.game.add.sprite(game.world.centerX+window.innerWidth/4,game.world.centerY-innerHeight/15,'cardBack');
     deck.scale.setTo(cardscale,cardscale);
     deck.inputEnabled = false;
     deck.visible = false;
 
-    placeHolder1 = this.game.add.sprite(game.world.centerX-180,game.world.centerY-80,'cardPlaceholder');
+    placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/12,'cardPlaceholder');
     placeHolder1.scale.setTo(cardscale,cardscale);
     placeHolder1.visible = false;
 
-    placeHolder2 = this.game.add.sprite(game.world.centerX-50,game.world.centerY-80,'cardPlaceholder');
+    placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/12,'cardPlaceholder');
     placeHolder2.scale.setTo(cardscale,cardscale);
     placeHolder2.visible = false;
-
-    placeHolder3 = this.game.add.sprite(game.world.centerX-50,game.world.centerY-80,'cardPlaceholder');
-    placeHolder3.scale.setTo(cardscale,cardscale);
-    placeHolder3.visible = false;
   },
   update:function(){
   },
@@ -131,10 +128,11 @@ game.state.start('GameState');
 function start () {
   button.visible =false;
   deck.visible = true;
+  cardHeight = game.world.centerY+window.innerHeight/7;
+  cardHeightCpu = game.world.centerY-window.innerHeight/3;
   
   //create new game //Two Player game with one CPU
   game25 = new Game(2,cpuNumber);
-
   //get PlayerNumber
   playerNumber=0;
 
@@ -188,20 +186,20 @@ function newRound () {
 
 function setupCards(){
   //deck
-  deck = this.game.add.sprite(1080,game.world.centerY-80,'cardBack');
+  deck = this.game.add.sprite(game.world.centerX+window.innerWidth/4,game.world.centerY-innerHeight/15,'cardBack');
   deck.scale.setTo(cardscale,cardscale);
   deck.inputEnabled = false;
   deck.visible = true;
 
-  placeHolder1 = this.game.add.sprite(game.world.centerX-180,game.world.centerY-80,'cardPlaceholder');
+  placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/12,'cardPlaceholder');
   placeHolder1.scale.setTo(cardscale,cardscale);
   placeHolder1.visible = false;
 
-  placeHolder2 = this.game.add.sprite(game.world.centerX-50,game.world.centerY-80,'cardPlaceholder');
+  placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/12,'cardPlaceholder');
   placeHolder2.scale.setTo(cardscale,cardscale);
   placeHolder2.visible = false;
 
-  placeHolder3 = this.game.add.sprite(1080,game.world.centerY-80,'cardPlaceholder');
+  placeHolder3 = this.game.add.sprite(game.world.centerX+window.innerWidth/4,game.world.centerY-innerHeight/15,'cardPlaceholder');
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.visible = false;
 }//setupCards
@@ -224,7 +222,7 @@ function flipTrump () {
   deck.visible=false;
   deck.inputEnabled = false;
 
-  placeHolder3 = this.game.add.sprite(1080,game.world.centerY-80,trump.getImageName());
+  placeHolder3 = this.game.add.sprite(game.world.centerX+window.innerWidth/4,game.world.centerY-innerHeight/15,trump.getImageName());
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.events.onInputDown.add(displayTrump, this);
   placeHolder3.inputEnabled = true;
@@ -237,7 +235,6 @@ function flipTrump () {
 }//flipTrump
 
 function deal() {
-
   if (this.playerHand) {
     this.playerHand.destroy();
   }
@@ -256,26 +253,26 @@ function deal() {
   crds= game25.getHand(playerNumber).getCards();
   cpuCrds=game25.getHand(cpuNumber).getCards();
 
-  playerCardArray[0]=this.game.add.sprite(cardDistance*1,500,crds[0].getImageName());
+  playerCardArray[0]=this.game.add.sprite(cardDistance*1,cardHeight,crds[0].getImageName());
   playerCardArray[0].scale.setTo(cardscale,cardscale);
-  playerCardArray[1]=this.game.add.sprite(cardDistance*2,500,crds[1].getImageName());
+  playerCardArray[1]=this.game.add.sprite(cardDistance*2,cardHeight,crds[1].getImageName());
   playerCardArray[1].scale.setTo(cardscale,cardscale);
-  playerCardArray[2]=this.game.add.sprite(cardDistance*3,500,crds[2].getImageName());
+  playerCardArray[2]=this.game.add.sprite(cardDistance*3,cardHeight,crds[2].getImageName());
   playerCardArray[2].scale.setTo(cardscale,cardscale);
-  playerCardArray[3]=this.game.add.sprite(cardDistance*4,500,crds[3].getImageName());
+  playerCardArray[3]=this.game.add.sprite(cardDistance*4,cardHeight,crds[3].getImageName());
   playerCardArray[3].scale.setTo(cardscale,cardscale);
-  playerCardArray[4]=this.game.add.sprite(cardDistance*5,500,crds[4].getImageName());
+  playerCardArray[4]=this.game.add.sprite(cardDistance*5,cardHeight,crds[4].getImageName());
   playerCardArray[4].scale.setTo(cardscale,cardscale);
 
-  cpuCardArray[0]=this.game.add.sprite(cardDistance*1,50,'cardBack');
+  cpuCardArray[0]=this.game.add.sprite(cardDistance*1,cardHeightCpu,'cardBack');
   cpuCardArray[0].scale.setTo(cardscale,cardscale);
-  cpuCardArray[1]=this.game.add.sprite(cardDistance*2,50,'cardBack');
+  cpuCardArray[1]=this.game.add.sprite(cardDistance*2,cardHeightCpu,'cardBack');
   cpuCardArray[1].scale.setTo(cardscale,cardscale);
-  cpuCardArray[2]=this.game.add.sprite(cardDistance*3,50,'cardBack');
+  cpuCardArray[2]=this.game.add.sprite(cardDistance*3,cardHeightCpu,'cardBack');
   cpuCardArray[2].scale.setTo(cardscale,cardscale);
-  cpuCardArray[3]=this.game.add.sprite(cardDistance*4,50,'cardBack');
+  cpuCardArray[3]=this.game.add.sprite(cardDistance*4,cardHeightCpu,'cardBack');
   cpuCardArray[3].scale.setTo(cardscale,cardscale);
-  cpuCardArray[4]=this.game.add.sprite(cardDistance*5,50,'cardBack');
+  cpuCardArray[4]=this.game.add.sprite(cardDistance*5,cardHeightCpu,'cardBack');
   cpuCardArray[4].scale.setTo(cardscale,cardscale);
 
   //add players hand to a group
@@ -303,6 +300,7 @@ function enableInput(){
 function disableInput(){
   for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
       playerCardArray[i].inputEnabled = false;
+      playerCardArray[i].events.onInputDown.removeAll();
   } 
 }//disableInput
 
@@ -406,7 +404,7 @@ function cardPressed(crd) {
   selectedCardArray[playerNumber]=tempCrd;
 
   //move selected card to center
-  placeHolder1 = this.game.add.sprite(game.world.centerX-180,game.world.centerY-80,crd.key);
+  placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/12,crd.key);
   placeHolder1.scale.setTo(cardscale,cardscale);
 
   checkForMove();
@@ -417,7 +415,6 @@ function cpuMove (cpuNumber) {
   var tempCards = plyrs[cpuNumber].getHand().getCards();
 
   //pick a random cpu card from cpu hand (not implemented yet)
-
   //var randIndex = Math.floor((Math.random() * Object.keys(tempCards).length) + 1);
   var randIndex = (Object.keys(tempCards).length - 1);
 
@@ -434,7 +431,7 @@ function cpuMove (cpuNumber) {
   plyrs[cpuNumber].removeFromHand(tempCrd);
 
   //move selected card to center
-  placeHolder2 = this.game.add.sprite(game.world.centerX-50,game.world.centerY-80,tempCrd.getImageName());
+  placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/12,tempCrd.getImageName());
   placeHolder2.scale.setTo(cardscale,cardscale);
 
   //set selected Card and pass move to next player in game
@@ -458,7 +455,6 @@ function robCheck() {
         disableInput();
         //dialog ask if want to rob
         robMessageBox();
-        //console.log("has ace");
       }
     }//for
 
@@ -467,7 +463,6 @@ function robCheck() {
       notRobbable=false;
       disableInput();
       robMessageBox();
-      //console.log("dealers rob");
     }
   } 
 
@@ -482,10 +477,11 @@ function removeAll(sprite) {
 
 function robMessageBox() {
   this.showRobMessageBox("Do you want to rob the trump card!");
+  displayText("Do you want to rob the trump card!");
 }//robMessageBox
 
 function showRobMessageBox(text) {
-  var w=300,h=150;
+  var w=window.innerWidth/5,h=window.innerHeight/6;
   //just in case the message box already exists destroy it
   if (this.msgBox) {
       this.msgBox.destroy();
@@ -494,15 +490,16 @@ function showRobMessageBox(text) {
   var msgBox = game.add.group();
   //make the back of the message box
   var back = game.add.sprite(0, 0, "boxBack");
-  var yesButton = game.add.sprite(20, 90, "yesButton");
-  var noButton = game.add.sprite(170, 90, "noButton");
-  yesButton.scale.setTo(0.4,0.4);
-  noButton.scale.setTo(0.4,0.4);
+  var yesButton = game.add.sprite(w/8, h/1.5, "yesButton");
+  var noButton = game.add.sprite(w/1.7, h/1.5, "noButton");
+  yesButton.scale.setTo(0.3,0.3);
+  noButton.scale.setTo(0.3,0.3);
 
   //make a text field
-  var text1 = game.add.text(30, 0, text);
+  var text1 = game.add.text(0, 0, text);
   text1.wordWrap = true;
   text1.wordWrapWidth = w * 0.9;
+  text1.fontSize=20;
   
   //set the width and height 
   back.width = w;
@@ -525,15 +522,12 @@ function showRobMessageBox(text) {
   noButton.events.onInputDown.add(this.noRobClick, this);
 
   //set the message box in the center of the screen
-  //msgBox.x = (game.width / 2 - msgBox.width / 2)-70 ;
-  //msgBox.y = game.height / 2 - msgBox.height / 2;
-
-  msgBox.x = (game.width / 2 - msgBox.width / 2)-370 ;
+  msgBox.x = (game.width / 5.5 - msgBox.width / 2);
   msgBox.y = game.height / 2 - msgBox.height / 2;
   
   //set the text in the middle of the message box
   text1.x = back.width / 2 - text1.width / 2;
-  text1.y = (back.height / 2 - text1.height / 2)-30;
+  text1.y = (back.height / 2 - text1.height / 1.2);
 
   //make a state reference to the messsage box
   this.msgBox = msgBox;
@@ -567,12 +561,12 @@ function swapCard(crd) {
   game25.round.swapCard(playerNumber,tempCrd,trump);
 
   //replace trump with placeholder trump card
-  placeHolder3 = this.game.add.sprite(1080,game.world.centerY-80,trump.getSuit());
+  placeHolder3 = this.game.add.sprite(game.world.centerX+window.innerWidth/4,game.world.centerY-innerHeight/15,trump.getSuit());
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.events.onInputDown.add(displayTrump, this);
   placeHolder3.inputEnabled = true;
 
-  placeHolder4 = this.game.add.sprite(970,game.world.centerY-80,'cardBack');
+  placeHolder4 = this.game.add.sprite(game.world.centerX+window.innerWidth/5.5,game.world.centerY-innerHeight/15,'cardBack');
   placeHolder4.scale.setTo(cardscale,cardscale);
   placeHolder4.visible = true;
 
@@ -590,6 +584,7 @@ function enableSwapInput(){
       playerCardArray[i].events.onInputDown.add(swapCard,this);
       playerCardArray[i].inputEnabled = true;
   } 
+  displayText("Select card to swap");
 }//enableInput
 
 function renegeCheck() {
@@ -610,16 +605,20 @@ function renegeCheck() {
 }//renegeCheck
 
 function gameOver(){
+  disableInput();
   //remove all sprites
   removeAll();
-  //display winner
-  displayText("Player "+(game25.getWinner()+1)+" is the Winner");
+
+  if(!isNaN(game25.getWinner())){
+    //display winner
+    displayText("Player "+(game25.getWinner()+1)+" is the Winner");
+  }
 
   //Display game over 
-  var text = "Game over";
+  var text = "Game Over";
   var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-  var t = game.add.text(game.world.centerX-170, game.world.centerY, text, style);
+  var t = game.add.text(game.world.centerX-window.innerWidth/8, game.world.centerY-window.innerWidth/20, text, style);
 
-  button = game.add.button(game.world.centerX-70, game.world.centerY+170, 'restartButton', restart, this, 2, 1, 0);
+  button = game.add.button((game.world.centerX)-(button.width/2), game.world.centerY+window.innerHeight/20, 'restartButton', restart, this, 2, 1, 0);
   button.scale.setTo(0.5,0.5);
 }//gameOver
