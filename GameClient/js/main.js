@@ -1,4 +1,5 @@
 var game = new Phaser.Game(1200, 700, Phaser.AUTO, 'phaser');
+
 //start button
 var button;
 var cardscale = 0.2;
@@ -26,7 +27,7 @@ var GameState = {
     this.load.image('cardBack','assets/images/cards/backOfCard.png');
     this.load.image('cardPlaceholder','assets/images/cards/cardPlaceholder.png');
     this.load.image('button','assets/images/button.png');
-    this.load.image('restartButton','assets/images/restartbutton.png');
+    this.load.image('restartButton','assets/images/restartButton.png');
 
     //message dialog
     this.load.image("boxBack", "assets/images/boxBack.png");
@@ -457,7 +458,7 @@ function robCheck() {
         disableInput();
         //dialog ask if want to rob
         robMessageBox();
-        console.log("has ace");
+        //console.log("has ace");
       }
     }//for
 
@@ -466,7 +467,7 @@ function robCheck() {
       notRobbable=false;
       disableInput();
       robMessageBox();
-      console.log("dealers rob");
+      //console.log("dealers rob");
     }
   } 
 
@@ -591,9 +592,22 @@ function enableSwapInput(){
   } 
 }//enableInput
 
-function renageCheck() {
-  //todo
-}//renageCheck
+function renegeCheck() {
+  var reneged=false;
+
+  //if oppo plays card first check that players selected card isnt reneging 
+
+  //check that selected card matches suit // if doesnt check does player have matching suit reneged
+
+  //allow renaging of ace, jack, 5 of trumps if not better one played
+
+  //if reneged = true
+
+  //dont allow card to be played and alert player
+
+  return reneged;
+
+}//renegeCheck
 
 function gameOver(){
   //remove all sprites
