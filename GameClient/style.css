@@ -1,7 +1,7 @@
 body{
     padding:0px;
     margin:0px;
-    background-color: #17b52f
+    background-color: #17b52f;
 }
 
 canvas {   
@@ -10,11 +10,11 @@ canvas {
 
 textarea {
     border: 1px solid #888; 
-    width: 1198px;
+    width: auto;
     display: block;
     margin-left: auto;
     margin-right: auto; 
     text-align: left;
-    font-size: 25px;
+    font-size: 20px;
   }
 
