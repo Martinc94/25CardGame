@@ -354,7 +354,7 @@ function checkForWinner(){
         gameOver();
       }
       else{
-        //new round TODO  
+        //new round  
         newRound();
       }
     }
@@ -453,7 +453,7 @@ function robCheck() {
 
     for (var i = 0; i < Object.keys(playerCards).length; i++) {
       if(playerCards[i].getName()=="ace"&&playerCards[i].getSuit()==trump.getSuit()){
-        notRobbable=true;
+        notRobbable=false;
         disableInput();
         //dialog ask if want to rob
         robMessageBox();
@@ -463,7 +463,7 @@ function robCheck() {
 
     //if dealer turns up trump ace ask if want to rob
     if(trump.getName()=="ace"&&game25.getPlayerMove()==playerNumber){
-      notRobbable=true;
+      notRobbable=false;
       disableInput();
       robMessageBox();
       console.log("dealers rob");
@@ -484,7 +484,7 @@ function robMessageBox() {
 }//robMessageBox
 
 function showRobMessageBox(text) {
-  var w=510,h=160;
+  var w=300,h=150;
   //just in case the message box already exists destroy it
   if (this.msgBox) {
       this.msgBox.destroy();
@@ -493,8 +493,8 @@ function showRobMessageBox(text) {
   var msgBox = game.add.group();
   //make the back of the message box
   var back = game.add.sprite(0, 0, "boxBack");
-  var yesButton = game.add.sprite(120, 100, "yesButton");
-  var noButton = game.add.sprite(280, 100, "noButton");
+  var yesButton = game.add.sprite(20, 90, "yesButton");
+  var noButton = game.add.sprite(170, 90, "noButton");
   yesButton.scale.setTo(0.4,0.4);
   noButton.scale.setTo(0.4,0.4);
 
@@ -524,7 +524,10 @@ function showRobMessageBox(text) {
   noButton.events.onInputDown.add(this.noRobClick, this);
 
   //set the message box in the center of the screen
-  msgBox.x = (game.width / 2 - msgBox.width / 2)-70 ;
+  //msgBox.x = (game.width / 2 - msgBox.width / 2)-70 ;
+  //msgBox.y = game.height / 2 - msgBox.height / 2;
+
+  msgBox.x = (game.width / 2 - msgBox.width / 2)-370 ;
   msgBox.y = game.height / 2 - msgBox.height / 2;
   
   //set the text in the middle of the message box
