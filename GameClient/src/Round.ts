@@ -58,7 +58,7 @@ class Round {
         //generate hands for each player
         for(var i = 0; i < this.playerCount; i++){
             //new Hand for Player
-            var newPlayer = new Player("Player "+(i+1),0);
+            var newPlayer = new Player("Player_"+(i+1),0);
 
             //if not a player add player as a cpu
             if(i>=realCount){
