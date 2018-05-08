@@ -23,6 +23,8 @@ var playerHand,cpuHand;
 
 var GameState = {
   preload: function() {
+    game.scale.setMinMax(400, 300, 1000, 600);
+
     //loads Images
     this.load.image('cardBack','../assets/images/cards/backOfCard.png');
     this.load.image('cardPlaceholder','../assets/images/cards/cardPlaceholder.png');
