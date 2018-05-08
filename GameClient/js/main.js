@@ -6,10 +6,10 @@ var cardDistance = window.innerWidth/9;
 var cardHeight,cardHeightCpu;
 var game25;
 var playerNumber = 0;
-var cpuNumber = 1;
+var cpus={};
 var deck;
 var trump;
-var placeHolder1,placeHolder2,placeHolder3,placeHolder4;
+var placeHolder1,placeHolder2,placeHolder3,placeHolder4,miniPlaceHolder1,miniPlaceHolder2;
 var crds;
 var cpuCrds;
 var selectedCardArray={};
@@ -110,11 +110,11 @@ var GameState = {
     deck.inputEnabled = false;
     deck.visible = false;
 
-    placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/12,'cardPlaceholder');
+    placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/13,'cardPlaceholder');
     placeHolder1.scale.setTo(cardscale,cardscale);
     placeHolder1.visible = false;
 
-    placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/12,'cardPlaceholder');
+    placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/13,'cardPlaceholder');
     placeHolder2.scale.setTo(cardscale,cardscale);
     placeHolder2.visible = false;
   },
@@ -132,9 +132,10 @@ function start () {
   cardHeightCpu = game.world.centerY-window.innerHeight/3;
   
   //create new game //Two Player game with one CPU
-  game25 = new Game(2,cpuNumber);
+  game25 = new Game(2,1);
   //get PlayerNumber
   playerNumber=0;
+  cpus[0]=1;
 
   //Allow deck flip
   if(game25.getPlayerMove()==playerNumber){
@@ -191,11 +192,11 @@ function setupCards(){
   deck.inputEnabled = false;
   deck.visible = true;
 
-  placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/12,'cardPlaceholder');
+  placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/13,'cardPlaceholder');
   placeHolder1.scale.setTo(cardscale,cardscale);
   placeHolder1.visible = false;
 
-  placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/12,'cardPlaceholder');
+  placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/13,'cardPlaceholder');
   placeHolder2.scale.setTo(cardscale,cardscale);
   placeHolder2.visible = false;
 
@@ -251,7 +252,7 @@ function deal() {
 
   //get players hand
   crds= game25.getHand(playerNumber).getCards();
-  cpuCrds=game25.getHand(cpuNumber).getCards();
+  cpuCrds=game25.getHand(cpus[0]).getCards();
 
   playerCardArray[0]=this.game.add.sprite(cardDistance*1,cardHeight,crds[0].getImageName());
   playerCardArray[0].scale.setTo(cardscale,cardscale);
@@ -284,6 +285,24 @@ function deal() {
     cpuHand.add(cpuCardArray[i]);
   }
 }//deal
+
+function resetPlaceholders(){
+  miniPlaceHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/13,game.world.centerY-innerHeight/6,placeHolder1.key);
+  miniPlaceHolder1.scale.setTo(cardscale/2,cardscale/2);
+  miniPlaceHolder1.visible = true;
+
+  miniPlaceHolder2 = this.game.add.sprite(game.world.centerX+window.innerWidth/300,game.world.centerY-innerHeight/6,placeHolder2.key);
+  miniPlaceHolder2.scale.setTo(cardscale/2,cardscale/2);
+  miniPlaceHolder2.visible = true;
+
+  placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/13,'cardPlaceholder');
+  placeHolder1.scale.setTo(cardscale,cardscale);
+  placeHolder1.visible = true;
+
+  placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/13,'cardPlaceholder');
+  placeHolder2.scale.setTo(cardscale,cardscale);
+  placeHolder2.visible = true;
+}
 
 function displayTrump(){
  displayText(trump.getFullName()+" is the trump card");
@@ -321,6 +340,8 @@ function checkForMove(){
 
     //empty array
     selectedCardArray={};
+
+    resetPlaceholders();
   }
 
   checkForRoundover();
@@ -404,7 +425,7 @@ function cardPressed(crd) {
   selectedCardArray[playerNumber]=tempCrd;
 
   //move selected card to center
-  placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/12,crd.key);
+  placeHolder1 = this.game.add.sprite(game.world.centerX-window.innerWidth/10,game.world.centerY-innerHeight/13,crd.key);
   placeHolder1.scale.setTo(cardscale,cardscale);
 
   checkForMove();
@@ -431,7 +452,7 @@ function cpuMove (cpuNumber) {
   plyrs[cpuNumber].removeFromHand(tempCrd);
 
   //move selected card to center
-  placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/12,tempCrd.getImageName());
+  placeHolder2 = this.game.add.sprite(game.world.centerX-window.innerWidth/50,game.world.centerY-innerHeight/13,tempCrd.getImageName());
   placeHolder2.scale.setTo(cardscale,cardscale);
 
   //set selected Card and pass move to next player in game
