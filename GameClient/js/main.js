@@ -20,9 +20,16 @@ var gameText;
 //group of playersHand
 var playerHand,cpuHand;
 var gameHeight,gameWidth;
+var loadingText;
 
 var GameState = {
   preload: function() {
+    //loading screen
+    var text = "Loading game";
+    var style = { font: "65px Arial", fill: "white", boundsAlignH: "center", boundsAlignV: "middle" };
+    this.loadingText = game.add.text(game.world.centerX, game.world.centerY, text, style);
+    this.loadingText.anchor.setTo(0.5);
+
     //loads Images
     this.load.image('cardBack','../assets/images/cards/backOfCard.png');
     this.load.image('cardPlaceholder','../assets/images/cards/cardPlaceholder.png');
@@ -108,8 +115,8 @@ var GameState = {
     cardHeight = game.world.centerY+gameHeight/4.5;
     cardHeightCpu = game.world.centerY-gameHeight/2;
 
-    //game.stage.backgroundColor = "#14b55f";
     game.stage.backgroundColor = "#17b52f";
+    this.loadingText.visible=false;
     //start button
     button = game.add.button(game.world.centerX, game.world.centerY, 'button', start, this, 2, 1, 0);
     button.x-=button.width/4;
@@ -139,7 +146,7 @@ game.state.start('GameState');
 function start () {
   button.visible =false;
   deck.visible = true;
-  
+
   //create new game //Two Player game with one CPU
   game25 = new Game(2,1);
   //get PlayerNumber

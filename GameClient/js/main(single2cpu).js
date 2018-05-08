@@ -24,6 +24,12 @@ var playerHand,cpuHand,cpu2Hand;
 
 var GameState = {
   preload: function() {
+    //loading screen
+    var text = "Loading game";
+    var style = { font: "65px Arial", fill: "white", boundsAlignH: "center", boundsAlignV: "middle" };
+    this.loadingText = game.add.text(game.world.centerX, game.world.centerY, text, style);
+    this.loadingText.anchor.setTo(0.5);
+
     //loads Images
     this.load.image('cardBack','../assets/images/cards/backOfCard.png');
     this.load.image('cardPlaceholder','../assets/images/cards/cardPlaceholder.png');
@@ -100,6 +106,7 @@ var GameState = {
   },
   create:function(){
     game.stage.backgroundColor = "#17b52f";
+    this.loadingText.visible=false;
     //start button
     button = game.add.button(game.world.centerX, game.world.centerY, 'button', start, this, 2, 1, 0);
     button.x-=button.width/4;
