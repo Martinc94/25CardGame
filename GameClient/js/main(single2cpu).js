@@ -698,8 +698,10 @@ function gameOver(){
 
   //Display game over 
   var text = "Game Over";
-  var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-  var t = game.add.text(game.world.centerX-window.innerWidth/8, game.world.centerY-window.innerWidth/20, text, style);
+  var style = { font: "65px Arial", fill: "#ff0044", boundsAlignH: "center", boundsAlignV: "middle" };
+
+  text = game.add.text(game.world.centerX, game.world.centerY-(window.innerHeight/20), text, style);
+  text.anchor.setTo(0.5);
 
   button = game.add.button((game.world.centerX)-(button.width/2), game.world.centerY+window.innerHeight/20, 'restartButton', restart, this, 2, 1, 0);
   button.scale.setTo(0.5,0.5);
