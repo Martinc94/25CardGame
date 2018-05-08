@@ -36,11 +36,6 @@ app.get('/mode/singleplayer', function(req, res) {
   }//switch
 });
 
-//select how many players
-app.get('/select', function (req, res) {
-  res.sendFile(__dirname + '/WebClient/singleplayer.html');
-});
-
 //serve multiplayer game server
 app.get('/multiplayer', function (req, res) {
   res.send('Multiplayer coming soon!');
