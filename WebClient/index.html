@@ -110,7 +110,7 @@
               <i class="fa fa-4x fa-diamond text-primary mb-3 sr-icons"></i>
               <h3 class="mb-3">Singleplayer</h3>
               <p class="text-muted mb-0">Learn to play or practice your skills versus the computer.</p>
-              <a class="mb-3" href="select">Play Now</a>
+              <a class="mb-3" data-toggle="modal" data-target="#singlePlayerModal" href="">Play Now</a>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
@@ -125,7 +125,7 @@
             <div class="service-box mt-5 mx-auto">
               <i class="fa fa-4x fa-newspaper-o text-primary mb-3 sr-icons"></i>
               <h3 class="mb-3">Text Chat</h3>
-              <p class="text-muted mb-0">Talk as you play with your friends.</p>
+              <p class="text-muted mb-0">Talk as you play with your friends.(Coming soon)</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
@@ -259,6 +259,28 @@
         </div>
       </div>
     </section>
+
+    <div class="container">
+      <!-- Modal -->
+      <div class="modal fade" id="singlePlayerModal" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Choose Amount of players</h4>
+            </div>
+            <div class="modal-body">
+              <a href="mode/singleplayer/?players=2">Play vs one opponent</a> 
+              <br>
+              <a href="mode/singleplayer/?players=3">Play vs two opponents</a> 
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Back</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
