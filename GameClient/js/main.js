@@ -4,7 +4,7 @@ var cardscale;
 var cardDistance;
 var cardHeight,cardHeightCpu;
 var game25;
-var playerNumber = 0;
+var playerNumber;
 var cpus={};
 var deck;
 var trump;
@@ -135,6 +135,9 @@ var GameState = {
     placeHolder2 = this.game.add.sprite(game.world.centerX-gameWidth/50,game.world.centerY-gameHeight/12,'cardPlaceholder');
     placeHolder2.scale.setTo(cardscale,cardscale);
     placeHolder2.visible = false;
+
+    //get player number
+    playerNumber = 0;
   },
   update:function(){
   },
