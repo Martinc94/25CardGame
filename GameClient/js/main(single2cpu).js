@@ -30,6 +30,7 @@ var GameState = {
     var style = { font: "65px Arial", fill: "white", boundsAlignH: "center", boundsAlignV: "middle" };
     this.loadingText = game.add.text(game.world.centerX, game.world.centerY, text, style);
     this.loadingText.anchor.setTo(0.5);
+    game.stage.backgroundColor = "#17b52f";
 
     //loads Images
     this.load.image('cardBack','../assets/images/cards/backOfCard.png');
@@ -115,7 +116,6 @@ var GameState = {
     cardscale = 0.18;
     cardHeight = game.world.centerY+gameHeight/4.5;
     cardHeightCpu = game.world.centerY-gameHeight/2;
-
 
     game.stage.backgroundColor = "#17b52f";
     this.loadingText.visible=false;
