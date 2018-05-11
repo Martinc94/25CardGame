@@ -42,7 +42,6 @@ class Round {
         //generate hands for each player
         for(var i = 0; i < this.playerCount; i++){
             var newHand = new Hand();
-
             //draw 5 card and add to hand
             for(var j = 0; j < 5; j++){
                 var crd = this.deck.pickCard();
