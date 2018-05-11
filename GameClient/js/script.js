@@ -407,6 +407,10 @@ var Hand = /** @class */ (function () {
         this.cards = this.removeFromArray(this.cards, remCrd);
         this.addCard(addCrd);
     };
+    Hand.prototype.orderCards = function () {
+        //sort card array by card Value
+        this.cards.sort(function (a, b) { return a.getValue() < b.getValue() ? -1 : a.getValue() > b.getValue() ? 1 : 0; });
+    };
     Hand.prototype.removeCard = function (crd) {
         this.cards = this.removeFromArray(this.cards, crd);
     };
@@ -445,6 +449,10 @@ var Player = /** @class */ (function () {
     };
     Player.prototype.setHand = function (hnd) {
         this.hand = hnd;
+        if (this.getIsCPU()) {
+            //order cards for cpu
+            this.hand.orderCards();
+        } //if 
     };
     Player.prototype.getIsCPU = function () {
         return this.isCPU;
@@ -511,13 +519,14 @@ var Round = /** @class */ (function () {
             //if not a player add player as a cpu
             if (i >= realCount) {
                 newPlayer.setAsCPU();
-            }
+            } //if
+            //new hand
             var newHand = new Hand();
             //draw 5 card and add to hand
             for (var j = 0; j < 5; j++) {
                 var crd = this.deck.pickCard();
                 newHand.addCard(crd);
-            }
+            } //for
             //give hand to player
             newPlayer.setHand(newHand);
             //add new player to array
