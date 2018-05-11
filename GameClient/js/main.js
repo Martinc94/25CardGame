@@ -251,8 +251,10 @@ function flipTrump () {
   //Deals cards to players and displayes to the screen
   deal();
 
-  //check if top card can be robbed
-  robCheck();
+  if(game25.getPlayerMove()==playerNumber){
+    //check if top card can be robbed
+    robCheck();
+  }
 }//flipTrump
 
 function deal() {
@@ -339,7 +341,12 @@ function enableInput(){
 function disableInput(){
   for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
       playerCardArray[i].inputEnabled = false;
-      playerCardArray[i].events.onInputDown.removeAll();
+
+      try {
+        playerHand.children[i].input.enabled = false;
+        playerHand.children[i].inputEnabled = false;
+      } catch (error) {
+      }
   } 
 }//disableInput
 
@@ -364,6 +371,7 @@ function checkForMove(){
     resetPlaceholders();
   }
 
+  //check if gameover
   checkForRoundover();
   checkForWinner();
   
@@ -374,6 +382,11 @@ function checkForMove(){
   else{
     //computers move
     cpuMove(game25.getPlayerMove());
+  }
+
+  if(game25.getPlayerMove()==playerNumber&&game25.round.getRobChecked()==false){
+    //check if top card can be robbed
+    robCheck();
   }
 }//checkForMove
 
@@ -426,7 +439,6 @@ function returnWinnerIndex(winCrd) {
 }//returnWinnerIndex
 
 function cardPressed(crd) {
-  disableInput();
   crd.visible =false;
   var tempCrd;
 
@@ -505,6 +517,7 @@ function robCheck() {
       disableInput();
       robMessageBox();
     }
+    game25.round.setRobChecked();
   } 
 
   if(notRobbable){
@@ -512,8 +525,10 @@ function robCheck() {
   }
 }//robCheck
 
-function removeAll(sprite) {
+function removeAll() {
   game.world.removeAll();
+  playerHand.removeChildren();
+  cpuHand.removeChildren();
 }//removeAll
 
 function robMessageBox() {
@@ -588,7 +603,6 @@ function noRobClick() {
 }//noRobClick
 
 function swapCard(crd) {
-  disableInput();
   crd.visible =false;
   var tempCrd;
 
@@ -622,11 +636,12 @@ function swapCard(crd) {
 
 function enableSwapInput(){
   for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
+      playerCardArray[i].events.onInputDown.removeAll();
       playerCardArray[i].events.onInputDown.add(swapCard,this);
       playerCardArray[i].inputEnabled = true;
   } 
   displayText("Select card to swap");
-}//enableInput
+}//enableSwapInput
 
 function renegeCheck() {
   var reneged=false;
@@ -646,7 +661,6 @@ function renegeCheck() {
 }//renegeCheck
 
 function gameOver(){
-  disableInput();
   //remove all sprites
   removeAll();
 

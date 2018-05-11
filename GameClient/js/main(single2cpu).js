@@ -144,7 +144,6 @@ var GameState = {
 
     //get player number
     playerNumber = 0;
-
   },
   update:function(){
   },
@@ -264,8 +263,10 @@ function flipTrump () {
   //Deals cards to players and displayes to the screen
   deal();
 
-  //check if top card can be robbed
-  robCheck();
+  if(game25.getPlayerMove()==playerNumber){
+    //check if top card can be robbed
+    robCheck();
+  }
 }//flipTrump
 
 function deal() {
@@ -382,12 +383,16 @@ function enableInput(){
 function disableInput(){
   for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
       playerCardArray[i].inputEnabled = false;
-      playerCardArray[i].events.onInputDown.removeAll();
+
+      try {
+        playerHand.children[i].input.enabled = false;
+        playerHand.children[i].inputEnabled = false;
+      } catch (error) {
+      }
   } 
 }//disableInput
 
 function checkForMove(){
-
   //check 
   if(Object.keys(selectedCardArray).length==3){
     //computeWinner
@@ -418,6 +423,11 @@ function checkForMove(){
   else{
     //computers move
     cpuMove(game25.getPlayerMove());
+  }
+
+  if(game25.getPlayerMove()==playerNumber&&game25.round.getRobChecked()==false){
+    //check if top card can be robbed
+    robCheck();
   }
 }//checkForMove
 
@@ -470,7 +480,6 @@ function returnWinnerIndex(winCrd) {
 }//returnWinnerIndex
 
 function cardPressed(crd) {
-  disableInput();
   crd.visible =false;
   var tempCrd;
 
@@ -568,6 +577,7 @@ function robCheck() {
       disableInput();
       robMessageBox();
     }
+    game25.round.setRobChecked();
   } 
 
   if(notRobbable){
@@ -575,9 +585,11 @@ function robCheck() {
   }
 }//robCheck
 
-function removeAll(sprite) {
+function removeAll() {
   game.world.removeAll();
-}//removeAll
+  playerHand.removeChildren();
+  cpuHand.removeChildren();
+}//removeAllll
 
 function robMessageBox() {
   this.showRobMessageBox("Do you want to rob the trump card!");
@@ -651,7 +663,6 @@ function noRobClick() {
 }//noRobClick
 
 function swapCard(crd) {
-  disableInput();
   crd.visible =false;
   var tempCrd;
 
@@ -709,7 +720,6 @@ function renegeCheck() {
 }//renegeCheck
 
 function gameOver(){
-  disableInput();
   //remove all sprites
   removeAll();
 
