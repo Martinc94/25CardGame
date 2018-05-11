@@ -1,11 +1,10 @@
 var game = new Phaser.Game((window.innerWidth * window.devicePixelRatio)-(window.innerWidth/5), (window.innerHeight * window.devicePixelRatio)-300, Phaser.AUTO, 'phaser');
-
 var button;
-var cardscale = window.devicePixelRatio / 5;
-var cardDistance = window.innerWidth/9;
+var cardscale;
+var cardDistance;
 var cardHeight,cardHeightCpu;
 var game25;
-var playerNumber = 0;
+var playerNumber;
 var cpus={};
 var deck;
 var trump;
@@ -21,6 +20,8 @@ var cpu2CardArray={};
 var gameText;
 //group of playersHand
 var playerHand,cpuHand,cpu2Hand;
+var gameHeight,gameWidth;
+var loadingText;
 
 var GameState = {
   preload: function() {
@@ -105,6 +106,17 @@ var GameState = {
     this.load.image('diamonds','../assets/images/cards/diamonds.png');
   },
   create:function(){
+    //set scalings such as height and width
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.setMinMax(300, 100, 1500, 650);
+    gameHeight=game.height;
+    gameWidth=game.width;
+    cardDistance = gameWidth/7;
+    cardscale = 0.18;
+    cardHeight = game.world.centerY+gameHeight/4.5;
+    cardHeightCpu = game.world.centerY-gameHeight/2;
+
+
     game.stage.backgroundColor = "#17b52f";
     this.loadingText.visible=false;
     //start button
@@ -129,6 +141,9 @@ var GameState = {
     placeHolder5 = this.game.add.sprite(game.world.centerX+window.innerWidth/32,game.world.centerY-innerHeight/12,'cardPlaceholder');
     placeHolder5.scale.setTo(cardscale,cardscale);
     placeHolder5.visible = false;
+
+    //get player number
+    playerNumber = 0;
 
   },
   update:function(){
