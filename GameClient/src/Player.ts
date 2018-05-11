@@ -37,6 +37,10 @@ class Player {
 
   public setHand(hnd: Hand) {
     this.hand = hnd;
+    if(this.getIsCPU()){
+      //order cards for cpu
+      this.hand.orderCards();
+    }//if 
   }
 
   public getIsCPU(): boolean {

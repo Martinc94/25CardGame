@@ -63,15 +63,16 @@ class Round {
             //if not a player add player as a cpu
             if(i>=realCount){
                 newPlayer.setAsCPU();
-            }
+            }//if
 
+            //new hand
             var newHand = new Hand();
-            
+
             //draw 5 card and add to hand
             for(var j = 0; j < 5; j++){
                 var crd = this.deck.pickCard();
                 newHand.addCard(crd);
-            }
+            }//for
 
             //give hand to player
             newPlayer.setHand(newHand);

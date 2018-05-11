@@ -14,7 +14,12 @@ class Hand {
     public swapCard(remCrd: Card,addCrd: Card) {
         this.cards=this.removeFromArray(this.cards,remCrd);
         this.addCard(addCrd);
-	}
+    }
+    
+    public orderCards(){
+        //sort card array by card Value
+        this.cards.sort((a, b) => a.getValue() < b.getValue() ? -1 : a.getValue() > b.getValue() ? 1 : 0);
+    }
     
     public removeCard(crd: Card) {
         this.cards=this.removeFromArray(this.cards,crd);
