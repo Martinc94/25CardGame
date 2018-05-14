@@ -127,7 +127,7 @@ var GameState = {
 
     else{
       //scaling for mobile
-      game.scale.setMinMax(100, 100, 700, 300);
+      game.scale.setMinMax(200, 100, 500, 250);
       cardDistance = gameWidth/7;
       cardscale = 0.3;
       cardHeight = game.world.centerY+gameHeight/4.5;
@@ -793,7 +793,7 @@ function handleCorrect(){
       game.scale.leaveIncorrectOrientation.add(handleCorrect);
       gameHeight=game.height;
       gameWidth=game.width;
-      game.scale.setMinMax(100, 100, 700, 300);
+      game.scale.setMinMax(200, 100, 500, 250);
       cardDistance = gameWidth/7;
       cardscale = 0.3;
       cardHeight = game.world.centerY+gameHeight/4.5;
