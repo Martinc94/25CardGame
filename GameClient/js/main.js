@@ -108,13 +108,26 @@ var GameState = {
   create:function(){
     //set scalings such as height and width
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    game.scale.setMinMax(300, 100, 1500, 650);
     gameHeight=game.height;
     gameWidth=game.width;
-    cardDistance = gameWidth/7;
-    cardscale = 0.18;
-    cardHeight = game.world.centerY+gameHeight/4.5;
-    cardHeightCpu = game.world.centerY-gameHeight/2;
+
+    if(this.game.device.desktop){
+      //scaling for desktop
+      game.scale.setMinMax(300, 100, 1800, 650);
+      cardDistance = gameWidth/7;
+      cardscale = 0.18;
+      cardHeight = game.world.centerY+gameHeight/4.5;
+      cardHeightCpu = game.world.centerY-gameHeight/2.1;
+    }//if
+
+    else{
+      //scaling for mobile
+      game.scale.setMinMax(100, 100, 700, 300);
+      cardDistance = gameWidth/7;
+      cardscale = 0.3;
+      cardHeight = game.world.centerY+gameHeight/4.5;
+      cardHeightCpu = game.world.centerY-gameHeight/2.1;
+    }
 
     game.stage.backgroundColor = "#17b52f";
     this.loadingText.visible=false;
