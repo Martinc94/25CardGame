@@ -616,12 +616,12 @@ function swapCard(crd) {
   game25.round.swapCard(playerNumber,tempCrd,trump);
 
   //replace trump with placeholder trump card
-  placeHolder3 = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/15,trump.getSuit());
+  placeHolder3 = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/12,trump.getSuit());
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.events.onInputDown.add(displayTrump, this);
   placeHolder3.inputEnabled = true;
 
-  placeHolder4 = this.game.add.sprite(game.world.centerX+gameWidth/5.5,game.world.centerY-gameHeight/15,'cardBack');
+  placeHolder4 = this.game.add.sprite(game.world.centerX+gameWidth/5.5,game.world.centerY-gameHeight/12,'cardBack');
   placeHolder4.scale.setTo(cardscale,cardscale);
   placeHolder4.visible = true;
 
