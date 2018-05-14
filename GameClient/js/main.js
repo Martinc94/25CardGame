@@ -21,6 +21,7 @@ var gameText;
 var playerHand,cpuHand;
 var gameHeight,gameWidth;
 var loadingText;
+var isPortrait;
 
 var GameState = {
   preload: function() {
@@ -108,6 +109,10 @@ var GameState = {
   create:function(){
     //set scalings such as height and width
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    isPortrait=game.scale.isGamePortrait;
+    game.scale.forceOrientation(true, false);
+		game.scale.enterIncorrectOrientation.add(handleIncorrect);
+    game.scale.leaveIncorrectOrientation.add(handleCorrect);
     gameHeight=game.height;
     gameWidth=game.width;
 
@@ -692,3 +697,40 @@ function gameOver(){
   button = game.add.button((game.world.centerX)-(button.width/2), game.world.centerY+gameHeight/20, 'restartButton', restart, this, 2, 1, 0);
   button.scale.setTo(0.5,0.5);
 }//gameOver
+
+//stops mobile users playing in portrait
+function handleIncorrect(){
+  if(!game.device.desktop){
+    //tells user to rotate
+    document.getElementById("turn").style.display="block";
+  }
+}//handleIncorrect
+
+function handleCorrect(){
+  if(!game.device.desktop){
+    if(isPortrait){
+      //set scalings such as height and width
+      game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+      isPortrait=game.scale.isGamePortrait;
+      game.scale.forceOrientation(true, false);
+      game.scale.enterIncorrectOrientation.add(handleIncorrect);
+      game.scale.leaveIncorrectOrientation.add(handleCorrect);
+      gameHeight=game.height;
+      gameWidth=game.width;
+      game.scale.setMinMax(100, 100, 700, 300);
+      cardDistance = gameWidth/7;
+      cardscale = 0.3;
+      cardHeight = game.world.centerY+gameHeight/4.5;
+      cardHeightCpu = game.world.centerY-gameHeight/2.1;
+      
+      //if elements not loaded reload page in new orientation
+      try {
+        this.loadingText.visible=false;
+      } catch (error) {
+        //reload game
+        location.reload(); 
+      }
+    }
+   document.getElementById("turn").style.display="none";
+  }
+}//handleCorrect
