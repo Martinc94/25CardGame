@@ -8,6 +8,7 @@ class Round {
     private realCount: number;
     private roundCount: number;
     private robChecked: boolean;
+    private dealerRobChecked: boolean;
 
     constructor(playerCount:number,realCount:number) {
         this.playerCount=playerCount;
@@ -127,4 +128,12 @@ class Round {
     public getRobChecked(): boolean {
         return this.robChecked; 
     }//getRobChecked
+
+    public setDealerRobChecked(): void {
+        this.dealerRobChecked=true; 
+    }//setRobChecked
+
+    public getDealerRobChecked(): boolean {
+        return this.dealerRobChecked; 
+    }//getDealerRobChecked  
 }//Round
