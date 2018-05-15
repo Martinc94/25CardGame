@@ -129,7 +129,7 @@ var GameState = {
       //scaling for mobile
       game.scale.setMinMax(200, 100, 500, 250);
       cardDistance = gameWidth/7;
-      cardscale = 0.25;
+      cardscale = 0.20;
       cardHeight = game.world.centerY+gameHeight/4.5;
       cardHeightCpu = game.world.centerY-gameHeight/2.1;
     }
@@ -882,7 +882,7 @@ function handleCorrect(){
       gameWidth=game.width;
       game.scale.setMinMax(200, 100, 500, 250);
       cardDistance = gameWidth/7;
-      cardscale = 0.25;
+      cardscale = 0.20;
       cardHeight = game.world.centerY+gameHeight/4.5;
       cardHeightCpu = game.world.centerY-gameHeight/2.1;
       
