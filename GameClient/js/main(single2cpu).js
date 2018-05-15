@@ -544,7 +544,7 @@ function cardPressed(crd) {
     selectedCardArray[playerNumber]=tempCrd;
 
     //move selected card to center
-    placeHolder1 = this.game.add.sprite(game.world.centerX-gameWidth/8,game.world.centerY-gameHeight/12,crd.key);
+    placeHolder1 = this.game.add.sprite(game.world.centerX-gameWidth/7,game.world.centerY-gameHeight/12,crd.key);
     placeHolder1.scale.setTo(cardscale,cardscale);
 
     checkForMove();
