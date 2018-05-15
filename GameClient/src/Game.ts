@@ -14,7 +14,7 @@ class Game {
         //init variables
         this.players=this.round.getPlayers();
         //get whose dealer/move it is from server
-        this.move=0;
+        this.move=1;
         this.dealerNumber=0;
     }//constructor
 
@@ -48,6 +48,15 @@ class Game {
     public getPlayerMove(): number {
         return this.move; 
     }//getPlayerMove
+
+    public getDealerNumber(): number {
+        return this.dealerNumber; 
+    }//getDealerNumber
+
+    public getPlayerCount():number{
+        var playerCount=Object.keys(this.players).length;
+        return playerCount;
+    }//getPlayerCount
 
     public getPlayers(): Player[] {
         return this.players; 
