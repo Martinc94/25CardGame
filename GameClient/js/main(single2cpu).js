@@ -1,16 +1,14 @@
 var game = new Phaser.Game((window.innerWidth * window.devicePixelRatio)-(window.innerWidth/5), (window.innerHeight * window.devicePixelRatio)-300, Phaser.AUTO, 'phaser');
-var button;
-var cardscale;
-var cardDistance;
-var cardHeight,cardHeightCpu;
+//scaling options
+var cardscale,cardDistance,cardHeight,cardHeightCpu,gameHeight,gameWidth;
+//typescript game
 var game25;
 var playerNumber;
 var cpus={};
-var deck;
-var trump;
-var placeHolder1,placeHolder2,placeHolder3,placeHolder4,placeHolder5,miniPlaceHolder1,miniPlaceHolder2,miniPlaceHolder5;
-var crds;
-var cpuCrds,cpu2Crds;
+//phaser sprites
+var deck,trump,placeHolder1,placeHolder2,placeHolder3,placeHolder4,placeHolder5,miniPlaceHolder1,miniPlaceHolder2,miniPlaceHolder5,button,loadingText;
+var crds,cpuCrds,cpu2Crds;
+//array of played cards
 var selectedCardArray={};
 //Array of card sprites
 var playerCardArray={};
@@ -20,7 +18,9 @@ var cpu2CardArray={};
 var gameText;
 //group of playersHand
 var playerHand,cpuHand,cpu2Hand;
-var gameHeight,gameWidth;
+//bool to check if mobile device is in portrait mode
+var isPortrait;
+
 var loadingText;
 
 var GameState = {
@@ -172,6 +172,7 @@ game.state.start('GameState');
 function start () {
   button.visible =false;
   deck.visible = true;
+  selectedCardArray={};
 
   //create new game //Two Player game with one CPU
   game25 = new Game(3,2);
@@ -181,7 +182,7 @@ function start () {
   cpus[1]=2;
 
   //Allow deck flip
-  if(game25.getPlayerMove()==playerNumber){
+  if(game25.getDealerNumber()==playerNumber){
     deck.inputEnabled = true;
     deck.events.onInputDown.add(flipTrump, this);
   }
@@ -203,12 +204,13 @@ function restart(){
 
 function newRound () {
   removeAll();
+  selectedCardArray={};
   //newRound
   game25.newRound();
   setupCards();
 
   //Allow deck flip
-  if(game25.getPlayerMove()==playerNumber){
+  if(game25.getDealerNumber()==playerNumber){
     deck.inputEnabled = true;
     deck.events.onInputDown.add(flipTrump, this);
   }
@@ -224,7 +226,7 @@ function newRound () {
   }
   else{
     //cpu turn over Trump
-    flipTrump();
+    CpuFlipTrump();
   }
 }//start
 
@@ -262,7 +264,7 @@ function displayScore(){
   gameText.scrollTop = gameText.scrollHeight;
 }//displayScore
 
-function flipTrump () {
+function flipTrump() {
   //assign trump
   trump = game25.getRound().getTrump();
 
@@ -270,7 +272,26 @@ function flipTrump () {
   deck.visible=false;
   deck.inputEnabled = false;
 
-  placeHolder3 = this.game.add.sprite(game.world.centerX+window.gameWidth/4,game.world.centerY-gameHeight/12,trump.getImageName());
+  placeHolder3 = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/12,trump.getImageName());
+  placeHolder3.scale.setTo(cardscale,cardscale);
+  placeHolder3.events.onInputDown.add(displayTrump, this);
+  placeHolder3.inputEnabled = true;
+
+  //Deals cards to players and displayes to the screen
+  deal();
+  
+  checkForMove();
+}//flipTrump
+
+function CpuFlipTrump() {
+  //assign trump
+  trump = game25.getRound().getTrump();
+
+  //place trump at top of deck
+  deck.visible=false;
+  deck.inputEnabled = false;
+
+  placeHolder3 = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/12,trump.getImageName());
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.events.onInputDown.add(displayTrump, this);
   placeHolder3.inputEnabled = true;
@@ -278,11 +299,7 @@ function flipTrump () {
   //Deals cards to players and displayes to the screen
   deal();
 
-  if(game25.getPlayerMove()==playerNumber){
-    //check if top card can be robbed
-    robCheck();
-  }
-}//flipTrump
+}//CpuFlipTrump
 
 function deal() {
   if (this.playerHand) {
@@ -428,6 +445,7 @@ function checkForMove(){
     resetPlaceholders();
   }
 
+  //check if gameover
   checkForRoundover();
   checkForWinner();
   
@@ -443,6 +461,10 @@ function checkForMove(){
   if(game25.getPlayerMove()==playerNumber&&game25.round.getRobChecked()==false){
     //check if top card can be robbed
     robCheck();
+  }
+
+  if(game25.getPlayerMove()==playerNumber&&game25.getPlayerMove()==game25.getDealerNumber()){
+    dealerRobCheck();
   }
 }//checkForMove
 
@@ -495,28 +517,38 @@ function returnWinnerIndex(winCrd) {
 }//returnWinnerIndex
 
 function cardPressed(crd) {
-  crd.visible =false;
   var tempCrd;
-
-  //set selected Card and pass move to next player in game
-  game25.incrementMove();
+  //update crds (hand)
+  crds= game25.getHand(playerNumber).getCards();
 
   //get a hold of card object
-  for (var i = 0; i < Object.keys(playerCardArray).length; i++) {
+  for (var i = 0; i < Object.keys(crds).length; i++) {
     if(crds[i].getImageName()==crd.key){
       tempCrd = crds[i];
     }
   }//for 
 
-  displayText("You played "+ tempCrd.getFullName());
+  var reneged = renegeCheck(tempCrd);
+  if(reneged){
+  }
+  else{
+    //remove card from hand
+    game25.getPlayers()[playerNumber].removeFromHand(tempCrd);
+    crd.visible =false;
 
-  selectedCardArray[playerNumber]=tempCrd;
+    //set selected Card and pass move to next player in game
+    game25.incrementMove();
 
-  //move selected card to center
-  placeHolder1 = this.game.add.sprite(game.world.centerX-window.gameWidth/7,game.world.centerY-gameHeight/12,crd.key);
-  placeHolder1.scale.setTo(cardscale,cardscale);
+    displayText("You played "+ tempCrd.getFullName());
 
-  checkForMove();
+    selectedCardArray[playerNumber]=tempCrd;
+
+    //move selected card to center
+    placeHolder1 = this.game.add.sprite(game.world.centerX-gameWidth/8,game.world.centerY-gameHeight/12,crd.key);
+    placeHolder1.scale.setTo(cardscale,cardscale);
+
+    checkForMove();
+  }//else 
 }//cardPressed
 
 function cpuMove (cpuNum) {
@@ -586,12 +618,6 @@ function robCheck() {
       }
     }//for
 
-    //if dealer turns up trump ace ask if want to rob
-    if(trump.getName()=="ace"&&game25.getPlayerMove()==playerNumber){
-      notRobbable=false;
-      disableInput();
-      robMessageBox();
-    }
     game25.round.setRobChecked();
   } 
 
@@ -599,6 +625,20 @@ function robCheck() {
     checkForMove();
   }
 }//robCheck
+
+function dealerRobCheck() {
+  //check if player has been asked to rob
+  if(game25.round.getDealerRobChecked()){}
+  else{
+    //if dealer turns up trump ace ask if want to rob
+    if(trump.getName()=="ace"&&game25.getPlayerMove()==playerNumber){
+      notRobbable=false;
+      disableInput();
+      robMessageBox();
+    }
+    game25.round.setDealerRobChecked();
+  } 
+}//dealerRobCheck
 
 function removeAll() {
   game.world.removeAll();
@@ -717,21 +757,68 @@ function enableSwapInput(){
   displayText("Select card to swap");
 }//enableInput
 
-function renegeCheck() {
+function renegeCheck(selectedCard) {
   var reneged=false;
-
+  var warningSuit=false;
+  var warningTrump=false;
   //if oppo plays card first check that players selected card isnt reneging 
+  if(Object.keys(selectedCardArray).length>0){
+    var tmpCrd;
+    for (var i = 1; i < (game25.getPlayerCount())+1; i++) {
+      //if not undefined
+      if(tmpCrd==undefined&&selectedCard!=undefined){
+        tmpCrd=selectedCardArray[i];
+      }
+    }//for
 
-  //check that selected card matches suit // if doesnt check does player have matching suit reneged
-
-  //allow renaging of ace, jack, 5 of trumps if not better one played
-
-  //if reneged = true
-
-  //dont allow card to be played and alert player
-
+    //check if 
+    if(tmpCrd.getSuit() == selectedCard.getSuit()&&tmpCrd.getValue()!=34){
+      //same suit cards not reneged
+    }//if
+    else{
+      //check if selected card is a trump
+      if(selectedCard.getIsTrump()){
+        //not reneged
+      }//if
+      else{
+        //check if players hand has card of same suit as first played
+        for (var j = 0; j < Object.keys(crds).length; j++) {
+          if(crds[j].getSuit()==tmpCrd.getSuit()){
+            //check if Card can be reneged
+            if(crds[j].getValue()>=34&&crds[j].getValue()>tmpCrd.getValue()){
+              //34(Ace of hearts) 35(Jack of Trumps) 36(5 of Trumps) can be reneged if not beaten by each other (eg 36 can be reneged on 35)
+            }//if
+            else{
+              //reneged a card or didnt match suit
+              if(crds[j].getIsTrump()){
+                reneged=true;
+                if(warningTrump==false){
+                  displayText("Dont renage a trump card");
+                  warningTrump=true;
+                }//if
+              }//if
+              else{
+                //if ace of hearts played and has no trump allows heart to be played
+                if(tmpCrd.getValue()==34&&selectedCard.getSuit()==tmpCrd.getSuit()){
+                }
+                else{
+                  reneged=true;
+                  if(warningSuit==false){
+                    displayText("Please match suit");
+                    warningSuit=true;
+                  }//if
+                }//else   
+              }//else
+            }//else
+          }//if
+        }//for 
+      }//else
+    }//else
+  }//if
+  else{
+    //first in array no renege check
+  }
   return reneged;
-
 }//renegeCheck
 
 function gameOver(){
