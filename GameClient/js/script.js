@@ -319,7 +319,7 @@ var Game = /** @class */ (function () {
         //init variables
         this.players = this.round.getPlayers();
         //get whose dealer/move it is from server
-        this.move = 0;
+        this.move = 1;
         this.dealerNumber = 0;
     } //constructor
     Game.prototype.getRound = function () {
@@ -347,6 +347,13 @@ var Game = /** @class */ (function () {
     Game.prototype.getPlayerMove = function () {
         return this.move;
     }; //getPlayerMove
+    Game.prototype.getDealerNumber = function () {
+        return this.dealerNumber;
+    }; //getDealerNumber
+    Game.prototype.getPlayerCount = function () {
+        var playerCount = Object.keys(this.players).length;
+        return playerCount;
+    }; //getPlayerCount
     Game.prototype.getPlayers = function () {
         return this.players;
     }; //getPlayers
@@ -570,6 +577,12 @@ var Round = /** @class */ (function () {
     Round.prototype.getRobChecked = function () {
         return this.robChecked;
     }; //getRobChecked
+    Round.prototype.setDealerRobChecked = function () {
+        this.dealerRobChecked = true;
+    }; //setRobChecked
+    Round.prototype.getDealerRobChecked = function () {
+        return this.dealerRobChecked;
+    }; //getDealerRobChecked  
     return Round;
 }()); //Round
 //Typescript class that holds the score of a round of 25
