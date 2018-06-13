@@ -20,7 +20,7 @@ app.use('/',express.static('WebClient'));
 app.use('/mode',express.static('GameClient'));
 
 app.get('/mode/singleplayer', function(req, res) {
-  var noOfPlayers = req.param('players');
+  var noOfPlayers = req.query.players;
   switch (noOfPlayers) {
     case '2':
       //one cpu
