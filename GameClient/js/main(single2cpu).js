@@ -655,7 +655,7 @@ function showRobMessageBox(text) {
   var w=gameWidth/5,h=gameHeight/6;
   //just in case the message box already exists destroy it
   if (this.msgBox) {
-      this.msgBox.destroy();
+    this.msgBox.destroy();
   }
   //make a group to hold all the elements
   var msgBox = game.add.group();
@@ -663,14 +663,14 @@ function showRobMessageBox(text) {
   var back = game.add.sprite(0, 0, "boxBack");
   var yesButton = game.add.sprite(w/8, h/1.5, "yesButton");
   var noButton = game.add.sprite(w/1.7, h/1.5, "noButton");
-  yesButton.scale.setTo(0.3,0.3);
-  noButton.scale.setTo(0.3,0.3);
+  yesButton.scale.setTo(0.25,0.25);
+  noButton.scale.setTo(0.25,0.25);
 
   //make a text field
   var text1 = game.add.text(0, 0, text);
   text1.wordWrap = true;
   text1.wordWrapWidth = w * 0.9;
-  text1.fontSize=20;
+  text1.fontSize=18;
   
   //set the width and height 
   back.width = w;
