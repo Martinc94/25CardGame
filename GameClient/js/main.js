@@ -594,7 +594,7 @@ function showRobMessageBox(text) {
   var w=gameWidth/5,h=gameHeight/6;
   //just in case the message box already exists destroy it
   if (this.msgBox) {
-      this.msgBox.destroy();
+    this.msgBox.destroy();
   }
   //make a group to hold all the elements
   var msgBox = game.add.group();
@@ -632,12 +632,12 @@ function showRobMessageBox(text) {
   noButton.events.onInputDown.add(this.noRobClick, this);
 
   //set the message box in the center of the screen
-  msgBox.x = (gameWidth / 5.5 - msgBox.width / 2);
+  msgBox.x = gameWidth / 5.5 - msgBox.width / 2;
   msgBox.y = gameHeight / 2 - msgBox.height / 2;
   
   //set the text in the middle of the message box
   text1.x = back.width / 2 - text1.width / 2;
-  text1.y = (back.height / 2 - text1.height / 1.2);
+  text1.y = back.height / 2 - text1.height / 1.2;
 
   //make a state reference to the messsage box
   this.msgBox = msgBox;
