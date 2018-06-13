@@ -142,20 +142,20 @@ var GameState = {
     button.scale.setTo(0.5,0.5);
 
     //deck
-    deck = this.game.add.sprite(game.world.centerX+window.gameWidth/4,game.world.centerY-gameHeight/12,'cardBack');
+    deck = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/12,'cardBack');
     deck.scale.setTo(cardscale,cardscale);
     deck.inputEnabled = false;
     deck.visible = false;
 
-    placeHolder1 = this.game.add.sprite(game.world.centerX-window.gameWidth/7,game.world.centerY-gameHeight/12,'cardPlaceholder');
+    placeHolder1 = this.game.add.sprite(game.world.centerX-gameWidth/7,game.world.centerY-gameHeight/12,'cardPlaceholder');
     placeHolder1.scale.setTo(cardscale,cardscale);
     placeHolder1.visible = false;
 
-    placeHolder2 = this.game.add.sprite(game.world.centerX-window.gameWidth/18,game.world.centerY-gameHeight/12,'cardPlaceholder');
+    placeHolder2 = this.game.add.sprite(game.world.centerX-gameWidth/18,game.world.centerY-gameHeight/12,'cardPlaceholder');
     placeHolder2.scale.setTo(cardscale,cardscale);
     placeHolder2.visible = false;
 
-    placeHolder5 = this.game.add.sprite(game.world.centerX+window.gameWidth/32,game.world.centerY-gameHeight/12,'cardPlaceholder');
+    placeHolder5 = this.game.add.sprite(game.world.centerX+gameWidth/32,game.world.centerY-gameHeight/12,'cardPlaceholder');
     placeHolder5.scale.setTo(cardscale,cardscale);
     placeHolder5.visible = false;
 
@@ -232,24 +232,24 @@ function newRound () {
 
 function setupCards(){
   //deck
-  deck = this.game.add.sprite(game.world.centerX+window.gameWidth/4,game.world.centerY-gameHeight/12,'cardBack');
+  deck = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/12,'cardBack');
   deck.scale.setTo(cardscale,cardscale);
   deck.inputEnabled = false;
   deck.visible = true;
 
-  placeHolder1 = this.game.add.sprite(game.world.centerX-window.gameWidth/7,game.world.centerY-gameHeight/12,'cardPlaceholder');
+  placeHolder1 = this.game.add.sprite(game.world.centerX-gameWidth/7,game.world.centerY-gameHeight/12,'cardPlaceholder');
   placeHolder1.scale.setTo(cardscale,cardscale);
   placeHolder1.visible = false;
 
-  placeHolder2 = this.game.add.sprite(game.world.centerX-window.gameWidth/18,game.world.centerY-gameHeight/12,'cardPlaceholder');
+  placeHolder2 = this.game.add.sprite(game.world.centerX-gameWidth/18,game.world.centerY-gameHeight/12,'cardPlaceholder');
   placeHolder2.scale.setTo(cardscale,cardscale);
   placeHolder2.visible = false;
 
-  placeHolder5 = this.game.add.sprite(game.world.centerX+window.gameWidth/32,game.world.centerY-gameHeight/12,'cardPlaceholder');
+  placeHolder5 = this.game.add.sprite(game.world.centerX+gameWidth/32,game.world.centerY-gameHeight/12,'cardPlaceholder');
   placeHolder5.scale.setTo(cardscale,cardscale);
   placeHolder5.visible = false;
 
-  placeHolder3 = this.game.add.sprite(game.world.centerX+window.gameWidth/4,game.world.centerY-gameHeight/12,'cardPlaceholder');
+  placeHolder3 = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/12,'cardPlaceholder');
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.visible = false;
 }//setupCards
@@ -374,28 +374,28 @@ function deal() {
 }//deal
 
 function resetPlaceholders(){
-  miniPlaceHolder1 = this.game.add.sprite(game.world.centerX-window.gameWidth/8,game.world.centerY-gameHeight/4,placeHolder1.key);
+  miniPlaceHolder1 = this.game.add.sprite(game.world.centerX-gameWidth/8,game.world.centerY-gameHeight/4,placeHolder1.key);
   miniPlaceHolder1.scale.setTo(cardscale/2,cardscale/2);
   miniPlaceHolder1.visible = true;
 
-  miniPlaceHolder2 = this.game.add.sprite(game.world.centerX-window.gameWidth/25,game.world.centerY-gameHeight/4,placeHolder2.key);
+  miniPlaceHolder2 = this.game.add.sprite(game.world.centerX-gameWidth/25,game.world.centerY-gameHeight/4,placeHolder2.key);
   miniPlaceHolder2.scale.setTo(cardscale/2,cardscale/2);
   miniPlaceHolder2.visible = true;
 
-  miniPlaceHolder5 = this.game.add.sprite(game.world.centerX+window.gameWidth/20,game.world.centerY-gameHeight/4,placeHolder5.key);
+  miniPlaceHolder5 = this.game.add.sprite(game.world.centerX+gameWidth/20,game.world.centerY-gameHeight/4,placeHolder5.key);
   miniPlaceHolder5.scale.setTo(cardscale/2,cardscale/2);
   miniPlaceHolder5.visible = true;
 
 
-  placeHolder1 = this.game.add.sprite(game.world.centerX-window.gameWidth/7,game.world.centerY-gameHeight/12,'cardPlaceholder');
+  placeHolder1 = this.game.add.sprite(game.world.centerX-gameWidth/7,game.world.centerY-gameHeight/12,'cardPlaceholder');
   placeHolder1.scale.setTo(cardscale,cardscale);
   placeHolder1.visible = true;
 
-  placeHolder2 = this.game.add.sprite(game.world.centerX-window.gameWidth/18,game.world.centerY-gameHeight/12,'cardPlaceholder');
+  placeHolder2 = this.game.add.sprite(game.world.centerX-gameWidth/18,game.world.centerY-gameHeight/12,'cardPlaceholder');
   placeHolder2.scale.setTo(cardscale,cardscale);
   placeHolder2.visible = true;
 
-  placeHolder5 = this.game.add.sprite(game.world.centerX+window.gameWidth/32,game.world.centerY-gameHeight/12,'cardPlaceholder');
+  placeHolder5 = this.game.add.sprite(game.world.centerX+gameWidth/32,game.world.centerY-gameHeight/12,'cardPlaceholder');
   placeHolder5.scale.setTo(cardscale,cardscale);
   placeHolder5.visible = true;
 }
@@ -580,18 +580,18 @@ function cpuMove (cpuNum) {
 
   if(cpuNum==1){
     //move selected card to center
-    placeHolder2 = this.game.add.sprite(game.world.centerX-window.gameWidth/18,game.world.centerY-gameHeight/12,tempCrd.getImageName());
+    placeHolder2 = this.game.add.sprite(game.world.centerX-gameWidth/18,game.world.centerY-gameHeight/12,tempCrd.getImageName());
     placeHolder2.scale.setTo(cardscale,cardscale);
   }
 
   else if(cpuNum==2){
     //move selected card to center
-    placeHolder5 = this.game.add.sprite(game.world.centerX+window.gameWidth/32,game.world.centerY-gameHeight/12,tempCrd.getImageName());
+    placeHolder5 = this.game.add.sprite(game.world.centerX+gameWidth/32,game.world.centerY-gameHeight/12,tempCrd.getImageName());
     placeHolder5.scale.setTo(cardscale,cardscale);
   }
 
   //move selected card to center
-  //placeHolder2 = this.game.add.sprite(game.world.centerX-window.gameWidth/18,game.world.centerY-gameHeight/12,tempCrd.getImageName());
+  //placeHolder2 = this.game.add.sprite(game.world.centerX-gameWidth/18,game.world.centerY-gameHeight/12,tempCrd.getImageName());
   //placeHolder2.scale.setTo(cardscale,cardscale);
 
   //set selected Card and pass move to next player in game
@@ -652,7 +652,7 @@ function robMessageBox() {
 }//robMessageBox
 
 function showRobMessageBox(text) {
-  var w=window.gameWidth/5,h=window.gameHeight/6;
+  var w=gameWidth/5,h=gameHeight/6;
   //just in case the message box already exists destroy it
   if (this.msgBox) {
       this.msgBox.destroy();
@@ -693,12 +693,12 @@ function showRobMessageBox(text) {
   noButton.events.onInputDown.add(this.noRobClick, this);
 
   //set the message box in the center of the screen
-  msgBox.x = (game.width / 5.5 - msgBox.width / 2);
-  msgBox.y = game.height / 2 - msgBox.height / 2;
+  msgBox.x = gameWidth / 5.5 - msgBox.width / 2;
+  msgBox.y = gameHeight / 2 - msgBox.height / 2;
   
   //set the text in the middle of the message box
   text1.x = back.width / 2 - text1.width / 2;
-  text1.y = (back.height / 2 - text1.height / 1.2);
+  text1.y = back.height / 2 - text1.height / 1.2;
 
   //make a state reference to the messsage box
   this.msgBox = msgBox;
@@ -731,12 +731,12 @@ function swapCard(crd) {
   game25.round.swapCard(playerNumber,tempCrd,trump);
 
   //replace trump with placeholder trump card
-  placeHolder3 = this.game.add.sprite(game.world.centerX+window.gameWidth/4,game.world.centerY-gameHeight/12,trump.getSuit());
+  placeHolder3 = this.game.add.sprite(game.world.centerX+gameWidth/4,game.world.centerY-gameHeight/12,trump.getSuit());
   placeHolder3.scale.setTo(cardscale,cardscale);
   placeHolder3.events.onInputDown.add(displayTrump, this);
   placeHolder3.inputEnabled = true;
 
-  placeHolder4 = this.game.add.sprite(game.world.centerX+window.gameWidth/5.5,game.world.centerY-gameHeight/12,'cardBack');
+  placeHolder4 = this.game.add.sprite(game.world.centerX+gameWidth/5.5,game.world.centerY-gameHeight/12,'cardBack');
   placeHolder4.scale.setTo(cardscale,cardscale);
   placeHolder4.visible = true;
 
@@ -834,10 +834,10 @@ function gameOver(){
   var text = "Game Over";
   var style = { font: "65px Arial", fill: "#ff0044", boundsAlignH: "center", boundsAlignV: "middle" };
 
-  text = game.add.text(game.world.centerX, game.world.centerY-(window.gameHeight/20), text, style);
+  text = game.add.text(game.world.centerX, game.world.centerY-(gameHeight/20), text, style);
   text.anchor.setTo(0.5);
 
-  button = game.add.button((game.world.centerX)-(button.width/2), game.world.centerY+window.gameHeight/20, 'restartButton', restart, this, 2, 1, 0);
+  button = game.add.button((game.world.centerX)-(button.width/2), game.world.centerY+gameHeight/20, 'restartButton', restart, this, 2, 1, 0);
   button.scale.setTo(0.5,0.5);
 }//gameOver
 
