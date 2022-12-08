@@ -4,7 +4,7 @@
   "description": "How to run:> nodemon server.js",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "phaser-ce": "^2.10.3",
     "socket.io": "^2.0.0",
     "tsc": "^1.20150623.0"
